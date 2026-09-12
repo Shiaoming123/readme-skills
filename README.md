@@ -8,13 +8,13 @@
 
 [Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
 
-[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![Version v0.2.1](https://img.shields.io/badge/version-v0.2.1-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
 README Skills inspects the actual project, identifies the reader's most useful first action, and then creates or improves the repository front page. It adapts the structure to the artifact and lifecycle instead of filling a universal template.
 
-> **Release:** `v0.2.0`. The Skill is distributed under the MIT License and validated as a complete repository package.
+> **Release:** `v0.2.1`. The Skill is distributed under the MIT License and validated as a complete repository package.
 
 ![README Skills turns repository evidence into a matched README through inspection, classification, writing, and validation.](assets/workflow.svg)
 
@@ -170,7 +170,7 @@ Every case is an `optimize` example, not a replacement exercise. Its versioned `
 <h3>Design resources</h3>
 <a href="examples/design-resource/after.md"><img src="assets/showcase/design-resource-comparison.png" alt="Before and after README comparison for an archived frontend design resource collection"></a>
 <p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">Fixed source</a> · <a href="examples/design-resource/after.md">Optimized README</a></p>
-<p>Preserves the banner, contribution route, original taxonomy, and all three resources while visualizing which categories are actually populated.</p>
+<p>Preserves the banner, contribution route, all three resources, and all 52 original category jump labels; the adapted table routes every label to a real coverage section instead of flattening navigation into plain text.</p>
 </td>
 </tr>
 </table>

@@ -88,6 +88,7 @@ This is a composer, not a mandatory template. Omit unsupported or irrelevant sec
 
 - Preserve valid branding, voice, links, attribution, screenshots, and contributor intent.
 - Before optimizing, inventory the existing headings, links, resource entries, examples, commands, assets, badges, citations, and attribution. Keep every valid reader-facing item reachable in the result; do not replace the original body with a summary card or a link back to the source.
+- Preserve navigation affordances as well as text: linked table-of-contents and category labels must remain clickable after regrouping. Retarget them to valid adapted section anchors when the structure changes; never flatten working navigation into plain-text inventory rows.
 - Remove or replace existing material only when it is unsupported, stale, duplicated, unsafe, broken, or outside the requested scope. Record the reason and preserve an honest historical route when removal would otherwise erase useful context.
 - For resource collections, keep retained entries directly clickable. Improve scanning with categories, indexes, tables, annotations, counts, formats, or maintenance labels rather than substituting an inventory count for the resources themselves.
 - Put the smallest useful example before exhaustive reference material.

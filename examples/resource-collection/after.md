@@ -14,13 +14,13 @@ Treat entries as discovery leads rather than maintained recommendations. “Awes
 
 ## Browse the snapshot
 
-| Category | Entries | Jump to |
-| --- | ---: | --- |
-| Inspiration | 1 | [Browse](#inspiration) |
-| Community | 2 | [Browse](#community) |
-| Examples | 2 | [Browse](#examples) |
-| Software | 3 | [Browse](#software) |
-| Models | 2 | [Browse](#models) |
+| Category | Entries |
+| --- | ---: |
+| [Inspiration](#inspiration) | 1 |
+| [Community](#community) | 2 |
+| [Examples](#examples) | 2 |
+| [Software](#software) | 3 |
+| [Models](#models) | 2 |
 
 ### Inspiration
 

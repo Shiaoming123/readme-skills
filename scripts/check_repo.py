@@ -16,6 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+NAMED_LINK_RE = re.compile(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)")
+HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 
 
 def fail(message: str) -> None:
@@ -48,6 +50,29 @@ def check_local_links(path: Path) -> int:
             fail(f"broken local link in {path.relative_to(ROOT)}: {raw}")
         checked += 1
     return checked
+
+
+def heading_anchor(heading: str) -> str:
+    plain = re.sub(r"<[^>]+>|[`*_~]", "", heading).strip().lower()
+    return re.sub(r"[^\w\- ]", "", plain).replace(" ", "-")
+
+
+def check_preserved_navigation(before_text: str, after_text: str, case_id: str) -> None:
+    source_links = [
+        (label.strip(), target.strip())
+        for label, target in NAMED_LINK_RE.findall(before_text)
+        if target.strip().startswith("#")
+    ]
+    if not source_links:
+        return
+    after_links: dict[str, list[str]] = {}
+    for label, target in NAMED_LINK_RE.findall(after_text):
+        after_links.setdefault(label.strip(), []).append(target.strip())
+    after_anchors = {heading_anchor(heading) for heading in HEADING_RE.findall(after_text)}
+    for label, _ in source_links:
+        targets = after_links.get(label, [])
+        if not any(target.startswith("#") and target[1:] in after_anchors for target in targets):
+            fail(f"source navigation label is no longer a working jump link in {case_id}: {label}")
 
 
 def main() -> int:
@@ -117,6 +142,7 @@ def main() -> int:
             fail(f"fixed source README changed: {case['id']}")
         after_readme = require_file(case["after_readme"])
         after_text = after_readme.read_text(encoding="utf-8")
+        check_preserved_navigation(before_readme.read_text(encoding="utf-8"), after_text, case["id"])
         for target in case.get("preserved_links", []):
             if target not in after_text:
                 fail(f"preserved source link missing from {case['id']}: {target}")

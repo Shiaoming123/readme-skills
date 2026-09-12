@@ -8,13 +8,13 @@
 
 [研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
 
-[![当前版本 v0.2.0](https://img.shields.io/badge/version-v0.2.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![当前版本 v0.2.1](https://img.shields.io/badge/version-v0.2.1-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
 README Skills 会先检查真实项目，识别读者最需要完成的第一步，再创建或优化仓库首页。它不会用同一份通用模板套所有项目，而是根据产物类型、访问目的和生命周期选择结构。
 
-> **当前版本：** `v0.2.0`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
+> **当前版本：** `v0.2.1`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
 
 ![README Skills 通过检查、分类、写作和验证，将仓库证据转化为匹配项目的 README。](assets/workflow.svg)
 
@@ -170,7 +170,7 @@ Skill 大致按以下优先级检查信息：
 <h3>设计资源</h3>
 <a href="examples/design-resource/after.md"><img src="assets/showcase/design-resource-comparison.png" alt="已归档前端设计资源集合 README 优化前后对比"></a>
 <p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">固定来源</a> · <a href="examples/design-resource/after.md">优化后 README</a></p>
-<p>保留横幅、贡献入口、原始分类和全部三个资源，并直观标出哪些分类在快照中确有内容。</p>
+<p>保留横幅、贡献入口、全部三个资源以及原有 52 个分类跳转标签；适配后的表格让每个标签都指向真实的覆盖说明，而不是把导航降级成纯文本。</p>
 </td>
 </tr>
 </table>
