@@ -1,0 +1,7 @@
+interface:
+  display_name: "README Skills"
+  short_description: "自动识别仓库类型并创建、重构、优化与验证专业 README 文档"
+  default_prompt: "Use $readme-skills to inspect this repository and create or improve its README with minimal questions."
+
+policy:
+  allow_implicit_invocation: true

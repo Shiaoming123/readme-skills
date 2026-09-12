@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "snapshot_date": "2026-09-12",
+  "cases": [
+    {
+      "id": "application-frontend",
+      "category": "Application / frontend",
+      "repository": "amfoss/club-website-2019",
+      "sha": "674e138a209ac21d815147e77c4401a06c9e9930",
+      "source_readme": "https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md",
+      "license_url": "https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/LICENSE",
+      "after_readme": "examples/application-frontend/after.md",
+      "before_image": "assets/showcase/application-frontend-before.png",
+      "comparison_image": "assets/showcase/application-frontend-comparison.png",
+      "accent": "#38bdf8",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · APPLICATION / FRONTEND",
+        "title": "amFOSS Website",
+        "tagline": "Historical Next.js source for the amFOSS community website.",
+        "status": "Archived. Current deployment and modern runtime compatibility are not verified.",
+        "action": "npm install\nnpm run dev",
+        "proof": ["Correct repository identity", "Node 10/16 evidence conflict shown", "Build and lint paths sourced from package.json"]
+      }
+    },
+    {
+      "id": "library-sdk",
+      "category": "Library / non-JS SDK",
+      "repository": "mattilyra/LSH",
+      "sha": "a57069bfb70f4b620d47931f81966b5a73c1b480",
+      "source_readme": "https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md",
+      "license_url": "https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/LICENSE",
+      "after_readme": "examples/library-sdk/after.md",
+      "before_image": "assets/showcase/library-sdk-before.png",
+      "comparison_image": "assets/showcase/library-sdk-comparison.png",
+      "accent": "#a78bfa",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · PYTHON LIBRARY",
+        "title": "pylsh",
+        "tagline": "MinHash locality-sensitive hashing for near-duplicate text detection.",
+        "status": "Archived. Modern Python compatibility is unverified; version sources conflict.",
+        "action": "from lsh.minhash import MinHasher\nhasher = MinHasher(128, random_state=0)",
+        "proof": ["Minimal source-backed API example", "Dependencies separated from compatibility", "0.3.0 vs 0.1.1 version conflict visible"]
+      }
+    },
+    {
+      "id": "cli-scaffold",
+      "category": "CLI / automation",
+      "repository": "thebigmunch/gmusicapi-scripts",
+      "sha": "5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8",
+      "source_readme": "https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md",
+      "license_url": "https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/LICENSE",
+      "after_readme": "examples/cli-scaffold/after.md",
+      "before_image": "assets/showcase/cli-scaffold-before.png",
+      "comparison_image": "assets/showcase/cli-scaffold-comparison.png",
+      "accent": "#f59e0b",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · CLI / AUTOMATION",
+        "title": "gmusicapi-scripts",
+        "tagline": "Five historical Google Music command-line workflows.",
+        "status": "Deprecated and archived. Follow the documented successor instead of installing this snapshot.",
+        "action": "gmdelete · gmdownload · gmsearch\ngmsync · gmupload",
+        "proof": ["Successor is the primary action", "Five entry points recovered from setup.py", "Credential and network boundary made visible"]
+      }
+    },
+    {
+      "id": "fork-downstream",
+      "category": "Fork / downstream",
+      "repository": "bitcoin/libbase58",
+      "sha": "b1dd03fa8d1be4be076bb6152325c6b5cf64f678",
+      "source_readme": "https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md",
+      "license_url": "https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/COPYING",
+      "after_readme": "examples/fork-downstream/after.md",
+      "before_image": "assets/showcase/fork-downstream-before.png",
+      "comparison_image": "assets/showcase/fork-downstream-comparison.png",
+      "accent": "#fb7185",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · FORK / C LIBRARY",
+        "title": "libbase58 0.1.4",
+        "tagline": "C routines for raw Base58 and Base58Check encoding and decoding.",
+        "status": "Archived GitHub fork of luke-jr/libbase58; divergence purpose is undocumented.",
+        "action": "./autogen.sh\n./configure && make",
+        "proof": ["Upstream relationship above the API", "Build path recovered from INSTALL", "Optional CLI dependency separated from library use"]
+      }
+    },
+    {
+      "id": "research-reproducibility",
+      "category": "Research / reproducibility",
+      "repository": "IBM/adaptive-federated-learning",
+      "sha": "b6bc482bf2aac15c28b50125ecc6f3e0096c5149",
+      "source_readme": "https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md",
+      "license_url": "https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/LICENSE",
+      "after_readme": "examples/research-reproducibility/after.md",
+      "before_image": "assets/showcase/research-reproducibility-before.png",
+      "comparison_image": "assets/showcase/research-reproducibility-comparison.png",
+      "accent": "#34d399",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · RESEARCH",
+        "title": "Adaptive Federated Learning",
+        "tagline": "Source accompanying the 2019 IEEE JSAC paper on resource-constrained edge systems.",
+        "status": "Archived legacy TensorFlow 1.x experiment; this showcase did not reproduce the paper results.",
+        "action": "1 server.py + 5 client.py processes\nthen plot_multi_run.py",
+        "proof": ["Environment bounds stated", "Config-to-artifact path documented", "Code execution separated from result reproduction"]
+      }
+    },
+    {
+      "id": "dataset-artifact",
+      "category": "Dataset / scientific artifact",
+      "repository": "fredzzhang/hicodet",
+      "sha": "e4e234045e0a4128995a2e45e841b3ebe64eda0b",
+      "source_readme": "https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md",
+      "license_url": "https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/LICENSE",
+      "after_readme": "examples/dataset-artifact/after.md",
+      "before_image": "assets/showcase/dataset-artifact-before.png",
+      "comparison_image": "assets/showcase/dataset-artifact-comparison.png",
+      "accent": "#22d3ee",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · DATASET UTILITIES",
+        "title": "HICO-DET utilities",
+        "tagline": "Code for loading, exploring, detecting, and evaluating human-object interactions.",
+        "status": "Archived. The MIT code license does not establish rights to the separately downloaded dataset.",
+        "action": "HICODet(root=..., anno_file=...)\n80 objects · 117 verbs · 600 interactions",
+        "proof": ["Code and data rights separated", "Schema and intended use promoted", "Unchecked download helper called out"]
+      }
+    },
+    {
+      "id": "resource-collection",
+      "category": "Skills / awesome / resources",
+      "repository": "cmda-vr/awesome-webvr",
+      "sha": "125aa5ac8af706fcf886de81e93ca2c3d69bcb28",
+      "source_readme": "https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md",
+      "license_url": "https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/LICENSE",
+      "after_readme": "examples/resource-collection/after.md",
+      "before_image": "assets/showcase/resource-collection-before.png",
+      "comparison_image": "assets/showcase/resource-collection-comparison.png",
+      "accent": "#f472b6",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · RESOURCE COLLECTION",
+        "title": "awesome-webvr",
+        "tagline": "A historical 2018 index of WebVR inspiration, communities, examples, software, and models.",
+        "status": "Archived and not link-checked for current use. Treat entries as discovery leads.",
+        "action": "Browse 5 categories · verify each target\nlicenses belong to linked resources",
+        "proof": ["Historical scope replaces timeless 'curated'", "Maintenance and link-health boundary visible", "Per-resource licensing separated"]
+      }
+    },
+    {
+      "id": "design-resource",
+      "category": "Design-resource collection",
+      "repository": "ibrahimraimi-archive/free-frontend-resources",
+      "sha": "57216cd446a7364db0daf926a1ebd1493bc21f9f",
+      "source_readme": "https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md",
+      "license_url": "https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/LICENSE.md",
+      "after_readme": "examples/design-resource/after.md",
+      "before_image": "assets/showcase/design-resource-before.png",
+      "comparison_image": "assets/showcase/design-resource-comparison.png",
+      "accent": "#60a5fa",
+      "preview": {
+        "eyebrow": "ARCHIVED SNAPSHOT · DESIGN RESOURCES",
+        "title": "Free Frontend Resources",
+        "tagline": "A historical catalog whose fixed snapshot contains one populated accessibility section.",
+        "status": "Archived. Availability, pricing, licenses, and accessibility of linked services are unverified.",
+        "action": "Use as a historical lead list\nverify format · license · terms · status",
+        "proof": ["Actual populated scope stated", "Broad empty taxonomy no longer overpromises", "Repository and third-party licenses separated"]
+      }
+    }
+  ]
+}
