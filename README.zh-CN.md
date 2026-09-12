@@ -2,21 +2,21 @@
 
 # README Skills
 
-**先匹配仓库，再写 README 的证据优先 Codex Skill。**
+**先匹配仓库，再写 README 的证据优先跨 Agent Skill。**
 
 [![English README](https://img.shields.io/badge/README-English-0969da.svg)](README.md) [![简体中文 README](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-8250df.svg)](README.zh-CN.md)
 
 [研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
 
-[![当前版本 v0.3.0](https://img.shields.io/badge/version-v0.3.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![Agent Skills 格式](https://img.shields.io/badge/Agent_Skills-compatible-8250df.svg)](COMPATIBILITY.md) [![当前版本 v0.4.0](https://img.shields.io/badge/version-v0.4.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
+![README Skills 概念图：仓库证据经过匹配与校验引擎，转化为专业 README。](assets/readme-skills-hero.png)
+
 README Skills 会先检查真实项目，识别读者最需要完成的第一步，再创建或优化仓库首页。它不会用同一份通用模板套所有项目，而是根据产物类型、访问目的和生命周期选择结构。
 
-> **当前版本：** `v0.3.0`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
-
-![README Skills 通过检查、分类、写作和验证，将仓库证据转化为匹配项目的 README。](assets/workflow.svg)
+> **当前版本：** `v0.4.0`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
 
 ## 为什么需要它
 
@@ -30,9 +30,19 @@ README Skills 会在写作前完成三个判断：
 
 它最多只集中提问一次，而且仅限答案会显著改变项目身份、目标受众、法律含义或外部操作时。
 
+![README Skills 通过检查、分类、写作和验证，将仓库证据转化为匹配项目的 README。](assets/workflow.svg)
+
 ## 快速开始
 
-把本仓库放到 `~/.codex/skills/readme-skills`，或 `CODEX_HOME` 下对应的 `skills/readme-skills` 目录，然后新建一个 Codex 任务以刷新 Skill 清单。
+README Skills 遵循开放的 Agent Skills 目录格式。请保持仓库结构完整，并把它放到对应 Agent 能识别的 Skill 目录：
+
+| Agent | 推荐目录 | 显式调用 |
+| --- | --- | --- |
+| Codex | `$HOME/.agents/skills/readme-skills` | `$readme-skills` |
+| Claude Code | `~/.claude/skills/readme-skills` | `/readme-skills` |
+| Copilot、Gemini CLI、Cursor、OpenCode | `~/.agents/skills/readme-skills` | 自然语言请求 |
+
+项目级目录和各客户端原生目录详见[兼容性说明](COMPATIBILITY.md)。所有 Agent 共用同一份标准包；`agents/openai.yaml` 只负责可选的 OpenAI/Codex 界面元数据。
 
 显式调用：
 
@@ -46,7 +56,7 @@ $readme-skills 检查当前仓库并创建最合适的专业 README，尽量减�
 优化现有 README，保留有效品牌内容，不要虚构尚未支持的功能。
 ```
 
-Skill 允许隐式触发，因此常规仓库 README 工作也能自动匹配。
+安装后请新建 Agent 会话或刷新 Skill 清单。Skill 描述支持隐式匹配，因此常规仓库 README 工作也能自动触发。
 
 ## 五种工作模式
 
@@ -204,6 +214,7 @@ Top 100 样本中，92 个使用图片、75 个使用原始 HTML、67 个使用�
 readme-skills/
 ├── SKILL.md
 ├── agents/openai.yaml
+├── COMPATIBILITY.md
 ├── references/
 │   ├── workflow-and-structure.md
 │   ├── repository-profiles.md
@@ -212,6 +223,7 @@ readme-skills/
 ├── examples/
 ├── research/
 ├── assets/
+│   └── readme-skills-hero.png
 ├── scripts/
 ├── PROVENANCE.md
 ├── VERSION

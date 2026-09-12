@@ -87,12 +87,14 @@ def main() -> int:
         "references/presentation-and-governance.md",
         "README.md",
         "README.zh-CN.md",
+        "COMPATIBILITY.md",
         "LICENSE",
         "VERSION",
         "PROVENANCE.md",
         "examples/README.md",
         "examples/cases.json",
         "assets/workflow.svg",
+        "assets/readme-skills-hero.png",
     ]
     for relative in required:
         require_file(relative)
@@ -100,6 +102,8 @@ def main() -> int:
     skill_text = require_file("SKILL.md").read_text(encoding="utf-8")
     if not skill_text.startswith("---\nname: readme-skills\n"):
         fail("SKILL.md name does not match the repository")
+    if "\nlicense: MIT\n" not in skill_text:
+        fail("SKILL.md is missing portable license metadata")
     if "[TODO" in skill_text or "TODO:" in skill_text:
         fail("SKILL.md still contains a TODO placeholder")
 
@@ -128,6 +132,10 @@ def main() -> int:
             fail(f"default version/license badges are missing from {readme.name}")
         if "img.shields.io/badge/README-English" not in text or "README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" not in text:
             fail(f"language navigation badges are missing from {readme.name}")
+        if "img.shields.io/badge/Agent_Skills-compatible" not in text or "(COMPATIBILITY.md)" not in text:
+            fail(f"Agent Skills compatibility link is missing from {readme.name}")
+        if "assets/readme-skills-hero.png" not in text:
+            fail(f"generated hero is missing from {readme.name}")
     for case in cases:
         if case.get("mode") != "optimize":
             fail(f"showcase case is not preservation-first optimize mode: {case.get('id')}")
@@ -172,6 +180,13 @@ def main() -> int:
                 fail(f"comparison preview does not open the full-size image in {readme.name}: {case['id']}")
 
     ET.parse(require_file("assets/workflow.svg"))
+    hero = require_file("assets/readme-skills-hero.png")
+    if png_size(hero) != (2172, 724) or hero.stat().st_size > 2_000_000:
+        fail(f"unexpected hero asset dimensions or size: {png_size(hero)}, {hero.stat().st_size} bytes")
+    compatibility = require_file("COMPATIBILITY.md").read_text(encoding="utf-8")
+    for client in ("Codex", "Claude Code", "GitHub Copilot", "Gemini CLI", "Cursor", "OpenCode"):
+        if client not in compatibility:
+            fail(f"compatibility guide is missing {client}")
     markdown = root_readmes + [require_file("examples/README.md")]
     markdown.extend(require_file(case["after_readme"]) for case in cases)
     link_count = sum(check_local_links(path) for path in markdown)

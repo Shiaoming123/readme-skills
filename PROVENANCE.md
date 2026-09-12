@@ -6,6 +6,10 @@ The `readme-skills` Skill, its reference files, repository README files, workflo
 
 No text or code from the surveyed third-party README Skills was copied into the package. Their public implementations informed ecosystem comparison only and remain attributed in [the ecosystem study](research/skill-ecosystem-study-2026-09-11.md).
 
+## Generated project artwork
+
+`assets/readme-skills-hero.png` was generated for this repository with OpenAI image generation on 2026-09-12 from a project-specific prompt. It depicts an abstract repository-to-README workflow and does not import third-party project logos or screenshots.
+
 ## Research evidence
 
 - [Top 100 README study](research/top-100-readme-study-2026-09-11.md) records its GitHub API method, fixed repository SHAs, limitations, and direct source links.

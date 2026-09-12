@@ -2,21 +2,21 @@
 
 # README Skills
 
-**An evidence-first Codex Skill that matches the repository before it writes the README.**
+**An evidence-first Agent Skill that matches the repository before it writes the README.**
 
 [![English README](https://img.shields.io/badge/README-English-0969da.svg)](README.md) [![简体中文 README](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-8250df.svg)](README.zh-CN.md)
 
 [Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
 
-[![Version v0.3.0](https://img.shields.io/badge/version-v0.3.0-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![Agent Skills format](https://img.shields.io/badge/Agent_Skills-compatible-8250df.svg)](COMPATIBILITY.md) [![Version v0.4.0](https://img.shields.io/badge/version-v0.4.0-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
+![README Skills concept: repository evidence flows through a matching and validation engine into a professional README.](assets/readme-skills-hero.png)
+
 README Skills inspects the actual project, identifies the reader's most useful first action, and then creates or improves the repository front page. It adapts the structure to the artifact and lifecycle instead of filling a universal template.
 
-> **Release:** `v0.3.0`. The Skill is distributed under the MIT License and validated as a complete repository package.
-
-![README Skills turns repository evidence into a matched README through inspection, classification, writing, and validation.](assets/workflow.svg)
+> **Release:** `v0.4.0`. The Skill is distributed under the MIT License and validated as a complete repository package.
 
 ## Why this Skill exists
 
@@ -30,9 +30,19 @@ README Skills makes three decisions before writing:
 
 It asks at most one bundled question, and only when the answer would materially change project identity, audience, legal meaning, or an external action.
 
+![README Skills turns repository evidence into a matched README through inspection, classification, writing, and validation.](assets/workflow.svg)
+
 ## Quick start
 
-Place this repository at `~/.codex/skills/readme-skills` (or the equivalent `skills/readme-skills` directory under `CODEX_HOME`), then begin a new Codex task so the Skill catalog refreshes.
+README Skills follows the open Agent Skills directory format. Keep this repository intact and place it in a Skill location recognized by your agent:
+
+| Agent | Recommended location | Explicit invocation |
+| --- | --- | --- |
+| Codex | `$HOME/.agents/skills/readme-skills` | `$readme-skills` |
+| Claude Code | `~/.claude/skills/readme-skills` | `/readme-skills` |
+| Copilot, Gemini CLI, Cursor, OpenCode | `~/.agents/skills/readme-skills` | Natural-language request |
+
+Project-scoped and client-native paths are listed in the [compatibility guide](COMPATIBILITY.md). The same canonical package serves every supported agent; `agents/openai.yaml` only adds optional OpenAI/Codex interface metadata.
 
 Invoke it explicitly:
 
@@ -46,7 +56,7 @@ Or ask naturally:
 Optimize the existing README without replacing valid branding or inventing unsupported features.
 ```
 
-The Skill allows implicit invocation, so repository README work can match it automatically.
+Start a new agent session or refresh its Skill catalog after installation. The description supports implicit matching, so ordinary repository README requests can invoke it automatically.
 
 ## Operating modes
 
@@ -204,6 +214,7 @@ The Top 100 sample found images in 92 repositories, raw HTML in 75, badges in 67
 readme-skills/
 ├── SKILL.md
 ├── agents/openai.yaml
+├── COMPATIBILITY.md
 ├── references/
 │   ├── workflow-and-structure.md
 │   ├── repository-profiles.md
@@ -212,6 +223,7 @@ readme-skills/
 ├── examples/
 ├── research/
 ├── assets/
+│   └── readme-skills-hero.png
 ├── scripts/
 ├── PROVENANCE.md
 ├── VERSION

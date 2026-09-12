@@ -1,6 +1,7 @@
 ---
 name: readme-skills
 description: Create, audit, optimize, restructure, translate, or release-sync repository README files by inspecting actual project evidence and automatically matching the repository type, reader journey, maturity, and hosting constraints. Use when a project has no README, has an incomplete or outdated README, needs a professional rewrite, needs a repository-specific structure, or needs README visuals, badges, architecture diagrams, multilingual navigation, or release-aligned documentation. Do not use for personal GitHub profile READMEs or full documentation-site authoring unless explicitly requested.
+license: MIT
 ---
 
 # README Skills
