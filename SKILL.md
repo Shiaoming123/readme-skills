@@ -56,6 +56,10 @@ Classify the project on three axes:
 
 Use one primary profile and only the overlays supported by evidence. Read [repository-profiles.md](references/repository-profiles.md) after classification. Technology changes commands and prerequisites; it does not justify a generic stack-branded README.
 
+### 3.1 Consult one worked example when useful
+
+For optimize or restructure work, or when the repository contract is unfamiliar, read [worked-examples.md](references/worked-examples.md) and choose at most one closest case. Compare its before-state problem with its after-state decisions to learn what was preserved, reorganized, added from evidence, or kept explicitly uncertain. Use the case as a decision example, never as a template or a source of claims about the current project. Skip this reference when the repository evidence already makes the structure obvious.
+
 ### 4. Build a claim ledger
 
 Before drafting, classify each material claim as **verified**, **inferred**, **missing**, or **conflicting**, and record its source. Prefer runnable project truth over promotional prose. Resolve conflicts or write the narrower supported claim.
@@ -97,6 +101,7 @@ This is a composer, not a mandatory template. Omit unsupported or irrelevant sec
 - State prerequisites before commands and explain placeholders at the point of use.
 - Separate current behavior from roadmap, planned platforms, experiments, and optional integrations.
 - Keep important limitations visible near the relevant promise or action.
+- Run a component selection pass by default. Evaluate native navigation and layout, verified project-status or language badges, repository-hosted proof media, and a useful diagram before considering external generators, live widgets, or README-mutating automation; follow the provider, privacy, fallback, and authorization rules in [presentation-and-governance.md](references/presentation-and-governance.md).
 - Run a badge pass by default in generate, optimize, restructure, and release-sync work. Add a compact row of verified, decision-relevant status badges and useful navigation badges near the project identity when authoritative targets exist; omit unsupported badge categories instead of fabricating status.
 - When any existing localized README changes, apply the same material update across the full discovered language set in this task unless the user explicitly excludes files. Synchronize meaning, commands, versions, links, support, security, and legal boundaries; literal sentence parity is not required.
 - In restructure mode, identify what is preserved, moved, replaced, added, or removed before making broad changes.

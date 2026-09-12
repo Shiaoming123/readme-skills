@@ -6,9 +6,9 @@
 
 [![English README](https://img.shields.io/badge/README-English-0969da.svg)](README.md) [![简体中文 README](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-8250df.svg)](README.zh-CN.md)
 
-[研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
+[快速开始](#快速开始) · [兼容性](COMPATIBILITY.md) · [案例](#前后对比案例) · [研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
 
-[![Agent Skills 格式](https://img.shields.io/badge/Agent_Skills-compatible-8250df.svg)](COMPATIBILITY.md) [![当前版本 v0.4.0](https://img.shields.io/badge/version-v0.4.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![Agent Skills 格式](https://img.shields.io/badge/Agent_Skills-compatible-8250df.svg)](COMPATIBILITY.md) [![当前版本 v0.4.0](https://img.shields.io/badge/version-v0.4.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE) [![已分析 100 篇 README](https://img.shields.io/badge/research-100_READMEs-0b7285.svg)](research/top-100-readme-study-2026-09-11.md) [![8 组前后案例](https://img.shields.io/badge/examples-8_before%2Fafter-f59e0b.svg)](examples/README.md)
 
 </div>
 
@@ -35,6 +35,14 @@ README Skills 会在写作前完成三个判断：
 ## 快速开始
 
 README Skills 遵循开放的 Agent Skills 目录格式。请保持仓库结构完整，并把它放到对应 Agent 能识别的 Skill 目录：
+
+```bash
+# 共享 Agent Skills 目录：Codex、Copilot、Gemini CLI、Cursor 和 OpenCode
+git clone https://github.com/Shiaoming123/readme-skills.git "$HOME/.agents/skills/readme-skills"
+
+# Claude Code
+git clone https://github.com/Shiaoming123/readme-skills.git "$HOME/.claude/skills/readme-skills"
+```
 
 | Agent | 推荐目录 | 显式调用 |
 | --- | --- | --- |
@@ -106,15 +114,26 @@ Skill 大致按以下优先级检查信息：
 
 默认使用可移植的 GitHub Flavored Markdown 和仓库内资产。只有确实能帮助读者判断或行动时，才使用受限 HTML、明暗主题 `<picture>`、表格、`<details>`、SVG 架构图、演示、徽章或动态趋势组件。
 
-动态第三方组件必须有静态或文字回退。Badge 可以承载简洁状态或高价值导航，但不是开场白；复杂图示必须提供可读总览和等价文字说明。
+| 组件类型 | 默认策略 |
+| --- | --- |
+| 原生结构 | 对较长或密集的 README 评估标题、链接、表格、`<details>` 和紧凑目录导航 |
+| 可验证 Badge | 优先已有工作流状态、发布/软件包版本、许可证、文档、兼容性和语言导航 |
+| 证明性媒体 | 优先仓库内截图、演示、SVG 与明暗主题图片，并提供有效替代文本 |
+| 架构图 | 只有关系用文字或小表格难以讲清时才加入 |
+| 动态服务 | 只有指标能帮助项目判断且有稳定文字或静态回退时才按需启用 |
+| Profile 装饰 | 项目 README 默认不加入访客数、关注者、连续贡献、奖杯、音乐、笑话或个人活动卡片 |
 
 生成、优化、重构和发版同步 README 时会默认执行 Badge 检查。只有版本、工作流、软件包、许可证或文档目标能够验证时才加入对应 Badge；证据缺失不会被包装成装饰性的“通过”状态。已有多语言 README 也会默认评估是否适合使用语言导航 Badge，本页顶部就是对应示例。
+
+原生组件和仓库自有资产始终优先。外部生成器与组件集合只用于发现能力，不作为项目事实来源；使用动态组件前会检查可用性、新鲜度、凭据、隐私和失败回退。详细选择规则来自 [Awesome README Tools 能力调研](research/awesome-readme-tools-capability-study-2026-09-12.md)。
 
 ## 前后对比案例
 
 案例采用公开仓库的固定 README 快照，这些快照对相应仓库类型存在明显的信息缺口。我们只评价该版本 README 的信息完整度，不评价项目本身；每个案例都会保留来源 URL、提交 SHA、许可证证据和事实审计。
 
 八组案例现在全部按 `optimize` 模式处理，而不是把原文替换成摘要卡。版本化的 `before.md` 保存固定来源，`after.md` 则保留有效正文和跳转目标，在此基础上重组层级并补充证据。两侧都通过 GitHub Markdown API 渲染，而且只截取 README 正文，不包含仓库导航、目录树或侧栏。每侧保持 1440 像素宽并按各自内容自适应高度；2956 像素宽的对比图将原文放左侧、优化版放右侧，较短一侧不会补白。点击预览图可查看原始尺寸。
+
+这些案例也会参与 Skill 的实际工作：执行优化或重构任务时，Agent 可以从 [worked-examples.md](references/worked-examples.md) 读取最接近的一类案例，学习其中的保留与证据决策，然后回到当前仓库分析，而不是照抄案例模板。
 
 <!-- showcase:start -->
 
@@ -205,6 +224,7 @@ python scripts/check_repo.py
 
 - [Top 100 README 调研与能力蓝图](research/top-100-readme-study-2026-09-11.md)：固定三分钟 GitHub 快照，对全部 100 篇 README 做源码特征提取，并完成 25 篇视觉人工复核和 10 个类型补样。
 - [README Skill 生态调研](research/skill-ecosystem-study-2026-09-11.md)：现有 README 专项 Skills、官方相邻能力、证据缺口和来源边界。
+- [Awesome README Tools 能力调研](research/awesome-readme-tools-capability-study-2026-09-12.md)：把清单中的 55 个生成器与组件分为安全默认项、可选集成和仅适合 Profile 的装饰项。
 
 Top 100 样本中，92 个使用图片、75 个使用原始 HTML、67 个使用徽章、43 个出现多语言入口信号、22 个使用动态组件。这些是流行度特征，不是质量评分；Skill 仍按读者价值和故障后果选择表现方式。
 
@@ -219,7 +239,8 @@ readme-skills/
 │   ├── workflow-and-structure.md
 │   ├── repository-profiles.md
 │   ├── evidence-and-validation.md
-│   └── presentation-and-governance.md
+│   ├── presentation-and-governance.md
+│   └── worked-examples.md
 ├── examples/
 ├── research/
 ├── assets/

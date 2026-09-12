@@ -8,6 +8,21 @@ Prefer portable GitHub Flavored Markdown. Use supported HTML narrowly for layout
 
 Do not depend on custom CSS, JavaScript, script tags, iframes, forms, or arbitrary canvas behavior. Assume sanitization, mobile width, light and dark themes, and image failure.
 
+## Default component selection
+
+Run a selection pass for generate, optimize, restructure, and release-sync work. A pass means evaluating components against the reader journey, not adding every available component.
+
+Prefer, in order:
+
+1. native Markdown links, headings, tables, disclosure blocks, and repository-hosted assets;
+2. native host signals such as an existing GitHub Actions workflow badge;
+3. authoritative package, version, license, documentation, compatibility, or language-navigation signals;
+4. stable external providers only when they add decision-relevant information that cannot be represented locally.
+
+Treat external README generators and component catalogs as discovery aids, not sources of project truth. Visitor counters, stars, followers, streaks, trophies, contribution cards, quotes, jokes, music, social cards, and personal activity are profile decoration and are never project-README defaults. Brand icons are optional and must retain readable text.
+
+Before adding a live component, verify its authoritative target, HTTPS availability, maintenance state, required credentials, exposed data, cache or freshness meaning, and failure fallback. Never add a README-writing workflow, hosted deployment, PAT or API key, OAuth connection, telemetry integration, repository write permission, or upload of private source as part of an ordinary README edit; each requires explicit user authorization.
+
 ## Badges
 
 Badges can expose compact status metadata or high-value navigation, but they are not the introduction.

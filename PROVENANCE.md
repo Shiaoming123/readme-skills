@@ -14,6 +14,7 @@ No text or code from the surveyed third-party README Skills was copied into the 
 
 - [Top 100 README study](research/top-100-readme-study-2026-09-11.md) records its GitHub API method, fixed repository SHAs, limitations, and direct source links.
 - [README Skill ecosystem study](research/skill-ecosystem-study-2026-09-11.md) records fixed upstream commits, capability comparisons, and license evidence.
+- [Awesome README Tools capability study](research/awesome-readme-tools-capability-study-2026-09-12.md) records the fixed curated-list commit and primary-source checks used to separate project defaults from optional or profile-only components.
 
 ## Showcase evidence
 

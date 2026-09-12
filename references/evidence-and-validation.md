@@ -82,8 +82,9 @@ Stop after the smallest check that meaningfully catches the relevant regression:
 2. targeted command/help/example verification;
 3. relative link and asset resolution;
 4. localized README inventory and material parity for identity, status, commands, versions, compatibility, support, security, and legal meaning;
-5. syntax checks for fenced examples, tables, HTML, and diagrams;
-6. rendered inspection for layout, theme-aware media, accessibility, or host-specific behavior.
+5. external component availability, target, fallback, privacy or secret requirements, and freshness meaning;
+6. syntax checks for fenced examples, tables, HTML, and diagrams;
+7. rendered inspection for layout, theme-aware media, accessibility, or host-specific behavior.
 
 Always inspect the final diff. Confirm that no unrelated files, claims, or user changes were altered.
 

@@ -6,9 +6,9 @@
 
 [![English README](https://img.shields.io/badge/README-English-0969da.svg)](README.md) [![简体中文 README](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-8250df.svg)](README.zh-CN.md)
 
-[Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
+[Quick start](#quick-start) · [Compatibility](COMPATIBILITY.md) · [Examples](#before-and-after-showcase) · [Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
 
-[![Agent Skills format](https://img.shields.io/badge/Agent_Skills-compatible-8250df.svg)](COMPATIBILITY.md) [![Version v0.4.0](https://img.shields.io/badge/version-v0.4.0-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![Agent Skills format](https://img.shields.io/badge/Agent_Skills-compatible-8250df.svg)](COMPATIBILITY.md) [![Version v0.4.0](https://img.shields.io/badge/version-v0.4.0-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE) [![100 READMEs analyzed](https://img.shields.io/badge/research-100_READMEs-0b7285.svg)](research/top-100-readme-study-2026-09-11.md) [![8 worked examples](https://img.shields.io/badge/examples-8_before%2Fafter-f59e0b.svg)](examples/README.md)
 
 </div>
 
@@ -35,6 +35,14 @@ It asks at most one bundled question, and only when the answer would materially 
 ## Quick start
 
 README Skills follows the open Agent Skills directory format. Keep this repository intact and place it in a Skill location recognized by your agent:
+
+```bash
+# Shared Agent Skills path: Codex, Copilot, Gemini CLI, Cursor, and OpenCode
+git clone https://github.com/Shiaoming123/readme-skills.git "$HOME/.agents/skills/readme-skills"
+
+# Claude Code
+git clone https://github.com/Shiaoming123/readme-skills.git "$HOME/.claude/skills/readme-skills"
+```
 
 | Agent | Recommended location | Explicit invocation |
 | --- | --- | --- |
@@ -106,15 +114,26 @@ All existing localized READMEs are treated as one documentation set. A material 
 
 The default is portable GitHub Flavored Markdown with repository-hosted assets. The Skill can use bounded HTML, theme-aware `<picture>` sources, tables, `<details>`, SVG diagrams, demos, badges, and dynamic trend components when they improve a reader decision.
 
-Dynamic providers remain optional and require a stable text or static fallback. Badges provide compact status or high-value navigation, not the introduction. Diagrams include a readable overview and an equivalent text explanation.
+| Component family | Default policy |
+| --- | --- |
+| Native structure | Evaluate headings, links, tables, `<details>`, and a compact contents route for long or dense READMEs |
+| Verified badges | Prefer existing workflow status, release/package version, license, documentation, compatibility, and language navigation |
+| Proof media | Prefer repository-hosted screenshots, demos, SVGs, and theme-aware images with useful alt text |
+| Architecture | Add a diagram only when it explains relationships better than prose or a small table |
+| Dynamic services | Opt in only when the signal helps a project decision and has a stable text or static fallback |
+| Profile decoration | Never default visitor counts, follower/streak/trophy cards, music, jokes, or personal activity in a project README |
 
 A badge pass runs by default for generated, optimized, restructured, and release-synchronized READMEs. It adds only status whose version, workflow, package, license, or documentation target can be verified; missing evidence never becomes a decorative “passing” badge. Existing localized README files are also candidates for linked language-navigation badges, as demonstrated above.
+
+Native or repository-owned output comes first. External generators and component catalogs are discovery aids, not sources of project truth; live components are checked for availability, freshness, credentials, privacy, and failure behavior before use. The detailed selection rules come from the [Awesome README Tools capability study](research/awesome-readme-tools-capability-study-2026-09-12.md).
 
 ## Before-and-after showcase
 
 The showcase uses fixed public README snapshots whose documentation is materially incomplete for its repository type. It evaluates the README snapshot—not the quality of the project—and preserves a source URL, commit SHA, license evidence, and factual audit for every case.
 
 Every case is an `optimize` example, not a replacement exercise. Its versioned `before.md` preserves the fixed source README, while `after.md` retains valid source content and destinations, reorganizes them, and adds evidence-backed context. Both panels are rendered through GitHub's Markdown API and capture only the README body—never repository navigation, file trees, or sidebars. Each panel stays 1440 pixels wide and follows its own content height; the comparison places them left and right in a 2956-pixel asset without padding the shorter document. Click a preview to open the full-size comparison.
+
+These examples also participate in the Skill itself: for optimize or restructure work, the Agent may load the single closest case from [worked-examples.md](references/worked-examples.md), learn its preservation and evidence decisions, and then return to the current repository instead of copying the example as a template.
 
 <!-- showcase:start -->
 
@@ -205,6 +224,7 @@ The design is grounded in two local studies. The first collected and analyzed 10
 
 - [Top 100 README study and capability blueprint](research/top-100-readme-study-2026-09-11.md): a fixed three-minute GitHub snapshot, source-level feature extraction across all 100 READMEs, 25 manual visual reviews, and 10 type-balancing supplements.
 - [README Skill ecosystem study](research/skill-ecosystem-study-2026-09-11.md): existing README-focused Skills, official adjacent capabilities, evidence gaps, and provenance boundaries.
+- [Awesome README Tools capability study](research/awesome-readme-tools-capability-study-2026-09-12.md): 55 listed generators and components classified into safe project defaults, optional integrations, and profile-only decoration.
 
 The Top 100 sample found images in 92 repositories, raw HTML in 75, badges in 67, multilingual entry signals in 43, and dynamic components in 22. These are prevalence signals, not quality scores; the Skill selects presentation based on reader value and failure behavior.
 
@@ -219,7 +239,8 @@ readme-skills/
 │   ├── workflow-and-structure.md
 │   ├── repository-profiles.md
 │   ├── evidence-and-validation.md
-│   └── presentation-and-governance.md
+│   ├── presentation-and-governance.md
+│   └── worked-examples.md
 ├── examples/
 ├── research/
 ├── assets/
