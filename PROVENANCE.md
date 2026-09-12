@@ -24,6 +24,8 @@ Every public-repository showcase case must record:
 
 Screenshots remain visual excerpts of their source repositories and do not transfer ownership of upstream names, logos, code, or documentation. Each comparison must link back to its source and must not imply endorsement or affiliation.
 
+The `*-after.png` files are screenshots of this repository's complete demonstration rewrites after GitHub Markdown API rendering. Each `*-comparison.png` places the fixed upstream screenshot above that rendered rewrite; it does not substitute a summary card for the output.
+
 ## License status
 
 The original work in this repository is licensed under the [MIT License](LICENSE), copyright (c) 2026 Shiaoming123.

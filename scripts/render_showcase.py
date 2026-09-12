@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Capture fixed GitHub README pages and render exact showcase comparison cards."""
+"""Capture original and rewritten README pages, then compose screenshot comparisons."""
 
 from __future__ import annotations
 
 import argparse
 import html
 import json
+import os
 from pathlib import Path
 import subprocess
 import time
+import urllib.error
+import urllib.request
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,12 +70,85 @@ def screenshot(edge: Path, url: str, output: Path, profile: Path, size: str) -> 
     ensure_png(output)
 
 
-def render_html(case: dict) -> str:
-    preview = case["preview"]
+def github_markdown(case: dict) -> str:
+    markdown = (ROOT / case["after_readme"]).read_text(encoding="utf-8")
+    body = json.dumps(
+        {"text": markdown, "mode": "gfm", "context": case["repository"]}
+    ).encode("utf-8")
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Content-Type": "application/json",
+        "User-Agent": "readme-skills-showcase-renderer/0.1",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    request = urllib.request.Request(
+        "https://api.github.com/markdown", data=body, headers=headers, method="POST"
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return response.read().decode("utf-8")
+    except urllib.error.HTTPError as error:
+        details = error.read().decode("utf-8", errors="replace")[:500]
+        raise RuntimeError(f"GitHub Markdown API returned {error.code}: {details}") from error
+    except urllib.error.URLError as error:
+        raise RuntimeError(f"GitHub Markdown API request failed: {error.reason}") from error
+
+
+def render_after_html(case: dict, rendered_markdown: str) -> str:
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{html.escape(case['repository'])} README Skills preview</title>
+<style>
+* {{ box-sizing: border-box; }}
+html, body {{ width: 1440px; min-height: 1200px; margin: 0; }}
+body {{ background: #f6f8fa; color: #1f2328; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
+.topbar {{ height: 64px; background: #24292f; color: #fff; display: flex; align-items: center; padding: 0 42px; font-weight: 650; }}
+.topbar span {{ color: #8c959f; margin: 0 8px; }}
+.repohead {{ height: 92px; padding: 22px 72px; background: #fff; border-bottom: 1px solid #d0d7de; }}
+.repo {{ color: #0969da; font-size: 21px; font-weight: 600; }}
+.notice {{ margin-top: 6px; color: #57606a; font-size: 13px; }}
+.shell {{ width: 1120px; margin: 28px auto 80px; background: #fff; border: 1px solid #d0d7de; border-radius: 8px; overflow: hidden; }}
+.filebar {{ height: 48px; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid #d8dee4; background: #f6f8fa; color: #57606a; font-size: 14px; font-weight: 600; }}
+.markdown-body {{ padding: 34px 40px 60px; overflow-wrap: break-word; }}
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {{ margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }}
+.markdown-body h1 {{ padding-bottom: .3em; border-bottom: 1px solid #d8dee4; font-size: 2em; }}
+.markdown-body h2 {{ padding-bottom: .3em; border-bottom: 1px solid #d8dee4; font-size: 1.5em; }}
+.markdown-body h3 {{ font-size: 1.25em; }}
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body table, .markdown-body pre {{ margin-top: 0; margin-bottom: 16px; }}
+.markdown-body a {{ color: #0969da; text-decoration: none; }}
+.markdown-body blockquote {{ padding: 0 1em; color: #57606a; border-left: .25em solid #d0d7de; }}
+.markdown-body code {{ padding: .2em .4em; border-radius: 6px; background: #afb8c133; font: 85% ui-monospace, SFMono-Regular, Consolas, monospace; }}
+.markdown-body pre {{ padding: 16px; overflow: auto; border-radius: 6px; background: #f6f8fa; }}
+.markdown-body pre code {{ padding: 0; background: transparent; font-size: 100%; }}
+.markdown-body table {{ border-spacing: 0; border-collapse: collapse; width: max-content; max-width: 100%; }}
+.markdown-body th, .markdown-body td {{ padding: 6px 13px; border: 1px solid #d0d7de; }}
+.markdown-body tr:nth-child(2n) {{ background: #f6f8fa; }}
+</style>
+</head>
+<body>
+<header class="topbar">README Skills <span>/</span> rendered output</header>
+<section class="repohead">
+  <div class="repo">{html.escape(case['repository'])}</div>
+  <div class="notice">Preview generated from {html.escape(case['after_readme'])}; not submitted upstream.</div>
+</section>
+<main class="shell">
+  <div class="filebar">README.md · GitHub-rendered demonstration rewrite</div>
+  <article class="markdown-body">{rendered_markdown}</article>
+</main>
+</body>
+</html>"""
+
+
+def render_comparison_html(case: dict) -> str:
     accent = html.escape(case["accent"])
-    action = html.escape(preview["action"]).replace("\n", "<br>")
-    proof = "".join(f"<li>{html.escape(item)}</li>" for item in preview["proof"])
     before_uri = (ROOT / case["before_image"]).resolve().as_uri()
+    after_uri = (ROOT / case["after_image"]).resolve().as_uri()
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -81,29 +157,22 @@ def render_html(case: dict) -> str:
 <title>{html.escape(case['category'])} README comparison</title>
 <style>
 * {{ box-sizing: border-box; }}
-html, body {{ width: 1400px; height: 900px; margin: 0; overflow: hidden; }}
+html, body {{ width: 1440px; height: 5120px; margin: 0; overflow: hidden; }}
 body {{ background: #07101f; color: #e5edf8; font-family: Inter, "Segoe UI", Arial, sans-serif; }}
-.page {{ width: 1400px; height: 900px; padding: 42px; background: radial-gradient(circle at 90% 0%, {accent}22, transparent 32%), linear-gradient(145deg, #07101f, #0f172a); }}
+.page {{ width: 1440px; height: 5120px; padding: 28px; background: radial-gradient(circle at 90% 0%, {accent}22, transparent 16%), linear-gradient(145deg, #07101f, #0f172a); }}
 .top {{ height: 76px; display: flex; align-items: flex-start; justify-content: space-between; }}
 .kicker {{ color: {accent}; font-size: 14px; font-weight: 800; letter-spacing: .14em; }}
 .repo {{ margin-top: 10px; font-size: 27px; font-weight: 750; color: #f8fafc; }}
 .sha {{ color: #94a3b8; font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; padding-top: 8px; }}
-.grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 26px; height: 716px; }}
-.panel {{ position: relative; overflow: hidden; border: 1px solid #26364f; border-radius: 24px; background: #0b1424; box-shadow: 0 22px 60px #02061799; }}
-.label {{ position: absolute; z-index: 4; top: 18px; left: 18px; padding: 9px 12px; border-radius: 999px; background: #020617e8; color: #dbeafe; font-size: 12px; font-weight: 800; letter-spacing: .08em; border: 1px solid #334155; }}
-.before {{ background: #f8fafc; }}
-.before img {{ position: absolute; width: 1400px; height: 1200px; max-width: none; left: -325px; top: -165px; object-fit: cover; }}
-.before:after {{ content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px #ffffff22; pointer-events: none; }}
-.after {{ padding: 78px 42px 38px; border-color: {accent}88; }}
-.eyebrow {{ color: {accent}; font-size: 13px; font-weight: 800; letter-spacing: .1em; }}
-h1 {{ margin: 18px 0 10px; color: #f8fafc; font-size: 42px; line-height: 1.06; letter-spacing: -.03em; }}
-.tagline {{ color: #cbd5e1; font-size: 18px; line-height: 1.5; }}
-.status {{ margin: 24px 0; padding: 16px 18px; border-left: 4px solid {accent}; border-radius: 8px; background: #111f33; color: #e2e8f0; font-size: 15px; line-height: 1.45; }}
-.action-title {{ margin-top: 26px; color: #94a3b8; font-size: 12px; font-weight: 800; letter-spacing: .1em; }}
-pre {{ margin: 10px 0 22px; padding: 16px 18px; border: 1px solid #26364f; border-radius: 12px; background: #050b15; color: #d9f99d; font: 15px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: normal; }}
-ul {{ margin: 0; padding-left: 20px; color: #cbd5e1; font-size: 15px; line-height: 1.7; }}
-li::marker {{ color: {accent}; }}
-.footer {{ height: 52px; display: flex; align-items: flex-end; justify-content: space-between; color: #64748b; font-size: 13px; }}
+.stack {{ display: grid; grid-template-rows: 2448px 2448px; gap: 20px; }}
+.panel {{ overflow: hidden; border: 1px solid #26364f; border-radius: 20px; background: #0b1424; box-shadow: 0 16px 42px #02061788; }}
+.panel-head {{ height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; background: #0b1424; border-bottom: 1px solid #26364f; }}
+.label {{ color: #f8fafc; font-size: 13px; font-weight: 800; letter-spacing: .08em; }}
+.label span {{ color: {accent}; }}
+.source {{ color: #94a3b8; font: 12px ui-monospace, SFMono-Regular, Consolas, monospace; }}
+.shot {{ height: 2400px; overflow: hidden; background: #f6f8fa; }}
+.shot img {{ display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }}
+.footer {{ height: 54px; display: flex; align-items: flex-end; justify-content: space-between; color: #64748b; font-size: 13px; }}
 .footer strong {{ color: #94a3b8; }}
 </style>
 </head>
@@ -113,20 +182,17 @@ li::marker {{ color: {accent}; }}
     <div><div class="kicker">README SKILLS · BEFORE / AFTER</div><div class="repo">{html.escape(case['repository'])}</div></div>
     <div class="sha">fixed {html.escape(case['sha'][:12])}</div>
   </header>
-  <section class="grid">
-    <article class="panel before"><div class="label">BEFORE · GitHub snapshot</div><img src="{before_uri}" alt=""></article>
-    <article class="panel after">
-      <div class="label">AFTER · Matched first screen</div>
-      <div class="eyebrow">{html.escape(preview['eyebrow'])}</div>
-      <h1>{html.escape(preview['title'])}</h1>
-      <div class="tagline">{html.escape(preview['tagline'])}</div>
-      <div class="status">{html.escape(preview['status'])}</div>
-      <div class="action-title">PRIMARY READER ACTION</div>
-      <pre>{action}</pre>
-      <ul>{proof}</ul>
+  <section class="stack">
+    <article class="panel">
+      <div class="panel-head"><div class="label"><span>BEFORE</span> · original repository README</div><div class="source">fixed commit screenshot</div></div>
+      <div class="shot"><img src="{before_uri}" alt=""></div>
+    </article>
+    <article class="panel">
+      <div class="panel-head"><div class="label"><span>AFTER</span> · README Skills output</div><div class="source">GitHub-rendered after.md screenshot</div></div>
+      <div class="shot"><img src="{after_uri}" alt=""></div>
     </article>
   </section>
-  <footer class="footer"><span>Illustrative first-screen comparison; full rewrite and evidence remain in the repository.</span><strong>readme-skills</strong></footer>
+  <footer class="footer"><span>Both panels are screenshots; the after panel comes from {html.escape(case['after_readme'])}.</span><strong>readme-skills</strong></footer>
 </main>
 </body>
 </html>"""
@@ -135,7 +201,7 @@ li::marker {{ color: {accent}; }}
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--capture", action="store_true", help="capture fixed GitHub README pages")
-    parser.add_argument("--render", action="store_true", help="render local comparison cards")
+    parser.add_argument("--render", action="store_true", help="render rewritten READMEs and comparison images")
     parser.add_argument("--force", action="store_true", help="replace existing outputs")
     parser.add_argument("--case", action="append", dest="case_ids", help="process one case id; repeat as needed")
     args = parser.parse_args()
@@ -156,17 +222,28 @@ def main() -> int:
         before = ROOT / case["before_image"]
         if capture and (args.force or not before.exists()):
             profile = WORK / "profiles" / f"{case['id']}-source-{time.time_ns()}"
-            screenshot(edge, case["source_readme"], before, profile, "1440,1200")
+            screenshot(edge, case["source_readme"], before, profile, "1440,2400")
             print(f"captured {before.relative_to(ROOT)}")
         if render:
             ensure_png(before)
-            page = WORK / "pages" / f"{case['id']}.html"
+            after = ROOT / case["after_image"]
+            if args.force or not after.exists():
+                page = WORK / "pages" / f"{case['id']}-after.html"
+                page.parent.mkdir(parents=True, exist_ok=True)
+                page.write_text(
+                    render_after_html(case, github_markdown(case)), encoding="utf-8"
+                )
+                profile = WORK / "profiles" / f"{case['id']}-after-{time.time_ns()}"
+                screenshot(edge, page.resolve().as_uri(), after, profile, "1440,2400")
+                print(f"rendered {after.relative_to(ROOT)}")
+            ensure_png(after)
+            page = WORK / "pages" / f"{case['id']}-comparison.html"
             page.parent.mkdir(parents=True, exist_ok=True)
-            page.write_text(render_html(case), encoding="utf-8")
+            page.write_text(render_comparison_html(case), encoding="utf-8")
             output = ROOT / case["comparison_image"]
             if args.force or not output.exists():
                 profile = WORK / "profiles" / f"{case['id']}-card-{time.time_ns()}"
-                screenshot(edge, page.resolve().as_uri(), output, profile, "1400,900")
+                screenshot(edge, page.resolve().as_uri(), output, profile, "1440,5120")
                 print(f"rendered {output.relative_to(ROOT)}")
     return 0
 

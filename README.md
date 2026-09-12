@@ -6,11 +6,13 @@
 
 [简体中文](README.zh-CN.md) · [Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
 
+[![Version v0.1.1](https://img.shields.io/badge/version-v0.1.1-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+
 </div>
 
 README Skills inspects the actual project, identifies the reader's most useful first action, and then creates or improves the repository front page. It adapts the structure to the artifact and lifecycle instead of filling a universal template.
 
-> **Release:** `v0.1.0`. The Skill is distributed under the MIT License and validated as a complete repository package.
+> **Release:** `v0.1.1`. The Skill is distributed under the MIT License and validated as a complete repository package.
 
 ![README Skills turns repository evidence into a matched README through inspection, classification, writing, and validation.](assets/workflow.svg)
 
@@ -94,21 +96,27 @@ The default is portable GitHub Flavored Markdown with repository-hosted assets. 
 
 Dynamic providers remain optional and require a stable text or static fallback. Badges are status metadata, not the introduction. Diagrams include a readable overview and an equivalent text explanation.
 
+A badge pass runs by default for generated, optimized, restructured, and release-synchronized READMEs. It adds only status whose version, workflow, package, license, or documentation target can be verified; missing evidence never becomes a decorative “passing” badge.
+
 ## Before-and-after showcase
 
 The showcase uses fixed public README snapshots whose documentation is materially incomplete for its repository type. It evaluates the README snapshot—not the quality of the project—and preserves a source URL, commit SHA, license evidence, and factual audit for every case.
+
+Every comparison contains two actual 1440×2400 screenshots: the original GitHub README at the fixed commit on top, and the complete `after.md` rewrite rendered through GitHub's Markdown API below. The long comparison preserves a large content viewport and multiple section levels; follow the rewrite link to read the full output beyond the captured viewport.
 
 <!-- showcase:start -->
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td width="100%" valign="top">
 <h3>Application / frontend</h3>
 <a href="examples/application-frontend/after.md"><img src="assets/showcase/application-frontend-comparison.png" alt="Before and after README comparison for the archived amfoss club website"></a>
 <p><a href="https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md">Fixed source</a> · <a href="examples/application-frontend/after.md">Demonstration rewrite</a></p>
 <p>Corrects repository identity, exposes conflicting runtime evidence, and derives the development path from the manifest.</p>
 </td>
-<td width="50%" valign="top">
+</tr>
+<tr>
+<td width="100%" valign="top">
 <h3>Library / SDK</h3>
 <a href="examples/library-sdk/after.md"><img src="assets/showcase/library-sdk-comparison.png" alt="Before and after README comparison for the archived pylsh Python library"></a>
 <p><a href="https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md">Fixed source</a> · <a href="examples/library-sdk/after.md">Demonstration rewrite</a></p>
@@ -116,13 +124,15 @@ The showcase uses fixed public README snapshots whose documentation is materiall
 </td>
 </tr>
 <tr>
-<td width="50%" valign="top">
+<td width="100%" valign="top">
 <h3>CLI / automation</h3>
 <a href="examples/cli-scaffold/after.md"><img src="assets/showcase/cli-scaffold-comparison.png" alt="Before and after README comparison for the archived gmusicapi scripts CLI"></a>
 <p><a href="https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md">Fixed source</a> · <a href="examples/cli-scaffold/after.md">Demonstration rewrite</a></p>
 <p>Routes readers to the successor, recovers five real entry points, and makes credential and network boundaries visible.</p>
 </td>
-<td width="50%" valign="top">
+</tr>
+<tr>
+<td width="100%" valign="top">
 <h3>Fork / downstream</h3>
 <a href="examples/fork-downstream/after.md"><img src="assets/showcase/fork-downstream-comparison.png" alt="Before and after README comparison for the archived bitcoin libbase58 fork"></a>
 <p><a href="https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md">Fixed source</a> · <a href="examples/fork-downstream/after.md">Demonstration rewrite</a></p>
@@ -130,13 +140,15 @@ The showcase uses fixed public README snapshots whose documentation is materiall
 </td>
 </tr>
 <tr>
-<td width="50%" valign="top">
+<td width="100%" valign="top">
 <h3>Research / reproducibility</h3>
 <a href="examples/research-reproducibility/after.md"><img src="assets/showcase/research-reproducibility-comparison.png" alt="Before and after README comparison for IBM adaptive federated learning research code"></a>
 <p><a href="https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md">Fixed source</a> · <a href="examples/research-reproducibility/after.md">Demonstration rewrite</a></p>
 <p>Separates legacy environment facts, experiment configuration, output artifacts, and the unverified reproduction boundary.</p>
 </td>
-<td width="50%" valign="top">
+</tr>
+<tr>
+<td width="100%" valign="top">
 <h3>Dataset / scientific artifact</h3>
 <a href="examples/dataset-artifact/after.md"><img src="assets/showcase/dataset-artifact-comparison.png" alt="Before and after README comparison for the HICO-DET scientific dataset repository"></a>
 <p><a href="https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md">Fixed source</a> · <a href="examples/dataset-artifact/after.md">Demonstration rewrite</a></p>
@@ -144,13 +156,15 @@ The showcase uses fixed public README snapshots whose documentation is materiall
 </td>
 </tr>
 <tr>
-<td width="50%" valign="top">
+<td width="100%" valign="top">
 <h3>Skills / resource collection</h3>
 <a href="examples/resource-collection/after.md"><img src="assets/showcase/resource-collection-comparison.png" alt="Before and after README comparison for the archived Awesome WebVR resource collection"></a>
 <p><a href="https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md">Fixed source</a> · <a href="examples/resource-collection/after.md">Demonstration rewrite</a></p>
 <p>Turns a historical list into a scoped taxonomy and makes curation, maintenance, and third-party licensing limits explicit.</p>
 </td>
-<td width="50%" valign="top">
+</tr>
+<tr>
+<td width="100%" valign="top">
 <h3>Design resources</h3>
 <a href="examples/design-resource/after.md"><img src="assets/showcase/design-resource-comparison.png" alt="Before and after README comparison for an archived frontend design resource collection"></a>
 <p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">Fixed source</a> · <a href="examples/design-resource/after.md">Demonstration rewrite</a></p>
@@ -165,7 +179,7 @@ The full [case index](examples/README.md) records the review method. [Candidate 
 
 ### Reproduce the gallery
 
-The renderer uses Python's standard library and a local Microsoft Edge installation. Source capture needs network access; local card rendering and repository checks do not.
+The renderer uses Python's standard library and a local Microsoft Edge installation. Capturing the source page and rendering `after.md` through GitHub need network access; composing the comparison from existing screenshots and running repository checks are local.
 
 ```powershell
 python scripts/render_showcase.py --capture

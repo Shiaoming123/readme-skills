@@ -94,6 +94,12 @@ def main() -> int:
     root_text = "\n".join(path.read_text(encoding="utf-8") for path in root_readmes)
     if f"v{version}" not in root_text or "(LICENSE)" not in root_text:
         fail("root READMEs do not expose the current version and license")
+    for readme in root_readmes:
+        text = readme.read_text(encoding="utf-8")
+        if "img.shields.io/badge/version" not in text or "img.shields.io/badge/license" not in text:
+            fail(f"default version/license badges are missing from {readme.name}")
+        if '<td width="50%"' in text:
+            fail(f"showcase comparisons are still constrained to half width in {readme.name}")
     for case in cases:
         if not SHA_RE.fullmatch(case.get("sha", "")):
             fail(f"invalid fixed SHA for {case.get('id')}")
@@ -103,10 +109,13 @@ def main() -> int:
             fail(f"missing source license URL for {case['id']}")
         require_file(case["after_readme"])
         before = require_file(case["before_image"])
+        after = require_file(case["after_image"])
         comparison = require_file(case["comparison_image"])
-        if png_size(before) != (1440, 1200):
+        if png_size(before) != (1440, 2400):
             fail(f"unexpected before image size for {case['id']}: {png_size(before)}")
-        if png_size(comparison) != (1400, 900):
+        if png_size(after) != (1440, 2400):
+            fail(f"unexpected after image size for {case['id']}: {png_size(after)}")
+        if png_size(comparison) != (1440, 5120):
             fail(f"unexpected comparison image size for {case['id']}: {png_size(comparison)}")
         if case["comparison_image"] not in root_text:
             fail(f"comparison image is not linked from a root README: {case['id']}")
@@ -115,7 +124,7 @@ def main() -> int:
     markdown = root_readmes + [require_file("examples/README.md")]
     markdown.extend(require_file(case["after_readme"]) for case in cases)
     link_count = sum(check_local_links(path) for path in markdown)
-    print(f"OK: v{version}, MIT, {len(cases)} cases, {len(categories)} categories, {link_count} local links, images and SVG valid")
+    print(f"OK: v{version}, MIT, {len(cases)} cases, {len(categories)} categories, {link_count} local links, source/after/comparison images and SVG valid")
     return 0
 
 

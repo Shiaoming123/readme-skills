@@ -12,10 +12,12 @@ Do not depend on custom CSS, JavaScript, script tags, iframes, forms, or arbitra
 
 Badges are status metadata, not the introduction.
 
+- Perform a badge pass by default for generate, optimize, restructure, and release-sync tasks. When authoritative evidence and stable targets exist, place a compact badge row near the identity block; an evidence gap means omitting that badge, not omitting the badge pass.
 - Keep only decision-relevant signals such as CI, package version, license, coverage, documentation, release, or maintained compatibility.
 - Link each badge to its authoritative target.
 - Keep ordering stable and avoid duplicate vanity metrics.
 - Verify branch names, workflow names, package identifiers, and endpoints.
+- Never manufacture a passing, current, supported, secure, or released state merely to fill the row. Preserve nearby text so the document remains understandable when badges fail.
 - Treat third-party badge services as external dependencies; the README must remain understandable when they fail.
 
 ## Images and demos

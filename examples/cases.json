@@ -11,6 +11,7 @@
       "license_url": "https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/LICENSE",
       "after_readme": "examples/application-frontend/after.md",
       "before_image": "assets/showcase/application-frontend-before.png",
+      "after_image": "assets/showcase/application-frontend-after.png",
       "comparison_image": "assets/showcase/application-frontend-comparison.png",
       "accent": "#38bdf8",
       "preview": {
@@ -31,6 +32,7 @@
       "license_url": "https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/LICENSE",
       "after_readme": "examples/library-sdk/after.md",
       "before_image": "assets/showcase/library-sdk-before.png",
+      "after_image": "assets/showcase/library-sdk-after.png",
       "comparison_image": "assets/showcase/library-sdk-comparison.png",
       "accent": "#a78bfa",
       "preview": {
@@ -51,6 +53,7 @@
       "license_url": "https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/LICENSE",
       "after_readme": "examples/cli-scaffold/after.md",
       "before_image": "assets/showcase/cli-scaffold-before.png",
+      "after_image": "assets/showcase/cli-scaffold-after.png",
       "comparison_image": "assets/showcase/cli-scaffold-comparison.png",
       "accent": "#f59e0b",
       "preview": {
@@ -71,6 +74,7 @@
       "license_url": "https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/COPYING",
       "after_readme": "examples/fork-downstream/after.md",
       "before_image": "assets/showcase/fork-downstream-before.png",
+      "after_image": "assets/showcase/fork-downstream-after.png",
       "comparison_image": "assets/showcase/fork-downstream-comparison.png",
       "accent": "#fb7185",
       "preview": {
@@ -91,6 +95,7 @@
       "license_url": "https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/LICENSE",
       "after_readme": "examples/research-reproducibility/after.md",
       "before_image": "assets/showcase/research-reproducibility-before.png",
+      "after_image": "assets/showcase/research-reproducibility-after.png",
       "comparison_image": "assets/showcase/research-reproducibility-comparison.png",
       "accent": "#34d399",
       "preview": {
@@ -111,6 +116,7 @@
       "license_url": "https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/LICENSE",
       "after_readme": "examples/dataset-artifact/after.md",
       "before_image": "assets/showcase/dataset-artifact-before.png",
+      "after_image": "assets/showcase/dataset-artifact-after.png",
       "comparison_image": "assets/showcase/dataset-artifact-comparison.png",
       "accent": "#22d3ee",
       "preview": {
@@ -131,6 +137,7 @@
       "license_url": "https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/LICENSE",
       "after_readme": "examples/resource-collection/after.md",
       "before_image": "assets/showcase/resource-collection-before.png",
+      "after_image": "assets/showcase/resource-collection-after.png",
       "comparison_image": "assets/showcase/resource-collection-comparison.png",
       "accent": "#f472b6",
       "preview": {
@@ -151,6 +158,7 @@
       "license_url": "https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/LICENSE.md",
       "after_readme": "examples/design-resource/after.md",
       "before_image": "assets/showcase/design-resource-before.png",
+      "after_image": "assets/showcase/design-resource-after.png",
       "comparison_image": "assets/showcase/design-resource-comparison.png",
       "accent": "#60a5fa",
       "preview": {
