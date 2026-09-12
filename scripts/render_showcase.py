@@ -50,7 +50,8 @@ def ensure_png(path: Path) -> None:
 CAPTURE_WIDTH = 1440
 MIN_CAPTURE_HEIGHT = 160
 MAX_CAPTURE_HEIGHT = 3600
-MAX_COMPARISON_HEIGHT = 7600
+COMPARISON_WIDTH = CAPTURE_WIDTH * 2 + 76
+MAX_COMPARISON_HEIGHT = 3900
 
 
 def edge_command(edge: Path, profile: Path, size: str) -> list[str]:
@@ -67,10 +68,10 @@ def edge_command(edge: Path, profile: Path, size: str) -> list[str]:
     ]
 
 
-def measure_height(edge: Path, url: str, profile: Path, max_height: int) -> int:
+def measure_height(edge: Path, url: str, profile: Path, max_height: int, width: int) -> int:
     profile.mkdir(parents=True, exist_ok=True)
     completed = subprocess.run(
-        edge_command(edge, profile, f"{CAPTURE_WIDTH},{MIN_CAPTURE_HEIGHT}")
+        edge_command(edge, profile, f"{width},{MIN_CAPTURE_HEIGHT}")
         + ["--dump-dom", url],
         check=False,
         capture_output=True,
@@ -88,11 +89,16 @@ def measure_height(edge: Path, url: str, profile: Path, max_height: int) -> int:
 
 
 def screenshot(
-    edge: Path, url: str, output: Path, profile: Path, max_height: int = MAX_CAPTURE_HEIGHT
+    edge: Path,
+    url: str,
+    output: Path,
+    profile: Path,
+    max_height: int = MAX_CAPTURE_HEIGHT,
+    width: int = CAPTURE_WIDTH,
 ) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
-    height = measure_height(edge, url, profile, max_height)
-    command = edge_command(edge, profile, f"{CAPTURE_WIDTH},{height}") + [
+    height = measure_height(edge, url, profile, max_height, width)
+    command = edge_command(edge, profile, f"{width},{height}") + [
         "--force-device-scale-factor=1",
         f"--screenshot={output}",
         url,
@@ -211,14 +217,14 @@ def render_comparison_html(case: dict) -> str:
 <title>{html.escape(case['category'])} README comparison</title>
 <style>
 * {{ box-sizing: border-box; }}
-html, body {{ width: {CAPTURE_WIDTH}px; margin: 0; }}
+html, body {{ width: {COMPARISON_WIDTH}px; margin: 0; }}
 body {{ background: #07101f; color: #e5edf8; font-family: Inter, "Segoe UI", Arial, sans-serif; }}
-.page {{ width: {CAPTURE_WIDTH}px; padding: 28px; background: radial-gradient(circle at 90% 0%, {accent}22, transparent 16%), linear-gradient(145deg, #07101f, #0f172a); }}
+.page {{ width: {COMPARISON_WIDTH}px; padding: 28px; background: radial-gradient(circle at 90% 0%, {accent}22, transparent 16%), linear-gradient(145deg, #07101f, #0f172a); }}
 .top {{ height: 76px; display: flex; align-items: flex-start; justify-content: space-between; }}
 .kicker {{ color: {accent}; font-size: 14px; font-weight: 800; letter-spacing: .14em; }}
 .repo {{ margin-top: 10px; font-size: 27px; font-weight: 750; color: #f8fafc; }}
 .sha {{ color: #94a3b8; font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; padding-top: 8px; }}
-.stack {{ display: grid; gap: 20px; }}
+.stack {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px; }}
 .panel {{ overflow: hidden; border: 1px solid #26364f; border-radius: 20px; background: #0b1424; box-shadow: 0 16px 42px #02061788; }}
 .panel-head {{ height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; background: #0b1424; border-bottom: 1px solid #26364f; }}
 .label {{ color: #f8fafc; font-size: 13px; font-weight: 800; letter-spacing: .08em; }}
@@ -310,7 +316,14 @@ def main() -> int:
             output = ROOT / case["comparison_image"]
             if args.force or not output.exists():
                 profile = WORK / "profiles" / f"{case['id']}-card-{time.time_ns()}"
-                screenshot(edge, page.resolve().as_uri(), output, profile, MAX_COMPARISON_HEIGHT)
+                screenshot(
+                    edge,
+                    page.resolve().as_uri(),
+                    output,
+                    profile,
+                    MAX_COMPARISON_HEIGHT,
+                    COMPARISON_WIDTH,
+                )
                 print(f"rendered {output.relative_to(ROOT)}")
     return 0
 

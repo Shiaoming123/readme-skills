@@ -4,7 +4,7 @@ These eight cases exercise README Skills against different repository contracts.
 
 “Incomplete” describes the cited README snapshot, not the project or its maintainers. Every selected repository was archived and MIT-licensed at the research date, and none of the optimizations were submitted upstream.
 
-All eight cases use `optimize` mode. A versioned, SHA-256-locked `before.md` stores the exact source README snapshot; `after.md` preserves valid content and destinations, reorganizes them, and adds evidence-backed context. The renderer sends both files through GitHub's Markdown API and captures only the README body. Repository navigation, file trees, sidebars, and artificial fixed-height padding are excluded. Captures are 1440 pixels wide and content-height up to 3600 pixels; the linked Markdown remains the complete output when a long document reaches that ceiling.
+All eight cases use `optimize` mode. A versioned, SHA-256-locked `before.md` stores the exact source README snapshot; `after.md` preserves valid content and destinations, reorganizes them, and adds evidence-backed context. The renderer sends both files through GitHub's Markdown API and captures only the README body. Repository navigation, file trees, sidebars, and artificial fixed-height padding are excluded. Each capture is 1440 pixels wide and content-height up to 3600 pixels. The 2956-pixel comparison places both native-width panels side by side, lets the shorter panel end naturally, and remains linked at full size; the Markdown is the complete output when a long document reaches the capture ceiling.
 
 | Category | Fixed source README | Preserved snapshot | Optimized README | Screenshot comparison |
 | --- | --- | --- | --- | --- |

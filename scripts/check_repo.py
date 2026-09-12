@@ -13,6 +13,8 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CAPTURE_WIDTH = 1440
+COMPARISON_WIDTH = CAPTURE_WIDTH * 2 + 76
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
@@ -126,8 +128,6 @@ def main() -> int:
             fail(f"default version/license badges are missing from {readme.name}")
         if "img.shields.io/badge/README-English" not in text or "README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" not in text:
             fail(f"language navigation badges are missing from {readme.name}")
-        if '<td width="50%"' in text:
-            fail(f"showcase comparisons are still constrained to half width in {readme.name}")
     for case in cases:
         if case.get("mode") != "optimize":
             fail(f"showcase case is not preservation-first optimize mode: {case.get('id')}")
@@ -154,16 +154,22 @@ def main() -> int:
         before_size = png_size(before)
         after_size = png_size(after)
         comparison_size = png_size(comparison)
-        if before_size[0] != 1440 or not 160 <= before_size[1] <= 3600:
+        if before_size[0] != CAPTURE_WIDTH or not 160 <= before_size[1] <= 3600:
             fail(f"unexpected content-sized before image for {case['id']}: {before_size}")
-        if after_size[0] != 1440 or not 160 <= after_size[1] <= 3600:
+        if after_size[0] != CAPTURE_WIDTH or not 160 <= after_size[1] <= 3600:
             fail(f"unexpected content-sized after image for {case['id']}: {after_size}")
-        if comparison_size[0] != 1440 or not 160 <= comparison_size[1] <= 7600:
-            fail(f"unexpected comparison image size for {case['id']}: {comparison_size}")
-        if comparison_size[1] >= 7600 and before_size[1] + after_size[1] < 7300:
-            fail(f"comparison image appears padded instead of content-sized: {case['id']}")
+        if comparison_size[0] != COMPARISON_WIDTH or not 380 <= comparison_size[1] <= 3900:
+            fail(f"comparison is not a full-width horizontal layout for {case['id']}: {comparison_size}")
+        expected_height = max(before_size[1], after_size[1]) + 236
+        if not expected_height - 4 <= comparison_size[1] <= expected_height + 4:
+            fail(f"comparison image is stacked or padded instead of content-height: {case['id']}")
         if case["comparison_image"] not in root_text:
             fail(f"comparison image is not linked from a root README: {case['id']}")
+        for readme in root_readmes:
+            text = readme.read_text(encoding="utf-8")
+            image_link = f'<a href="{case["comparison_image"]}"><img src="{case["comparison_image"]}"'
+            if image_link not in text:
+                fail(f"comparison preview does not open the full-size image in {readme.name}: {case['id']}")
 
     ET.parse(require_file("assets/workflow.svg"))
     markdown = root_readmes + [require_file("examples/README.md")]

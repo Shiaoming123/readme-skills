@@ -24,7 +24,7 @@ Every public-repository showcase case must record:
 
 Screenshots remain visual excerpts of their source repositories and do not transfer ownership of upstream names, logos, code, or documentation. Each comparison must link back to its source and must not imply endorsement or affiliation.
 
-Each case stores the fixed upstream Markdown in a versioned, SHA-256-locked `before.md` and the preservation-first optimization in `after.md`. Both are rendered through GitHub's Markdown API. The `*-before.png` and `*-after.png` files contain only the rendered README body, without GitHub navigation, repository file trees, sidebars, or unrelated page chrome. Their heights follow actual content up to the documented maximum instead of using blank fixed-height canvases. Each `*-comparison.png` places those equivalent content boundaries together; it does not substitute a summary card for either document.
+Each case stores the fixed upstream Markdown in a versioned, SHA-256-locked `before.md` and the preservation-first optimization in `after.md`. Both are rendered through GitHub's Markdown API. The `*-before.png` and `*-after.png` files contain only the rendered README body, without GitHub navigation, repository file trees, sidebars, or unrelated page chrome. Their heights follow actual content up to the documented maximum instead of using blank fixed-height canvases. Each `*-comparison.png` places those equivalent content boundaries side by side at their native panel widths; the shorter panel ends naturally rather than receiving blank padding, and neither document is replaced by a summary card.
 
 ## License status
 

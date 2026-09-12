@@ -30,6 +30,7 @@ Badges can expose compact status metadata or high-value navigation, but they are
 - Prefer short, compressed, captioned demos. Provide an adjacent text explanation for motion or complex visuals.
 - Do not add screenshots containing secrets, private data, personal paths, or unlicensed third-party content.
 - For before/after README evidence, use equivalent content boundaries. Capture the rendered README body rather than repository navigation, file trees, sidebars, or unrelated host chrome; size each capture to its actual content with a documented maximum instead of padding short documents to a fixed height.
+- Present before/after captures side by side at readable native panel widths when the purpose is visual comparison. Let the shorter panel end naturally instead of padding it to match the taller document, and link the embedded preview to the full-size comparison asset.
 
 ## Architecture and diagrams
 

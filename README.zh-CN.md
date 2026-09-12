@@ -8,13 +8,13 @@
 
 [研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
 
-[![当前版本 v0.2.1](https://img.shields.io/badge/version-v0.2.1-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[![当前版本 v0.3.0](https://img.shields.io/badge/version-v0.3.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
 README Skills 会先检查真实项目，识别读者最需要完成的第一步，再创建或优化仓库首页。它不会用同一份通用模板套所有项目，而是根据产物类型、访问目的和生命周期选择结构。
 
-> **当前版本：** `v0.2.1`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
+> **当前版本：** `v0.3.0`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
 
 ![README Skills 通过检查、分类、写作和验证，将仓库证据转化为匹配项目的 README。](assets/workflow.svg)
 
@@ -104,7 +104,7 @@ Skill 大致按以下优先级检查信息：
 
 案例采用公开仓库的固定 README 快照，这些快照对相应仓库类型存在明显的信息缺口。我们只评价该版本 README 的信息完整度，不评价项目本身；每个案例都会保留来源 URL、提交 SHA、许可证证据和事实审计。
 
-八组案例现在全部按 `optimize` 模式处理，而不是把原文替换成摘要卡。版本化的 `before.md` 保存固定来源，`after.md` 则保留有效正文和跳转目标，在此基础上重组层级并补充证据。上下两部分都通过 GitHub Markdown API 渲染，而且只截取 README 正文，不包含仓库导航、目录树或侧栏。宽度统一为 1440 像素，高度根据实际内容自适应并受明确上限约束，不再用固定高度制造底部空白。
+八组案例现在全部按 `optimize` 模式处理，而不是把原文替换成摘要卡。版本化的 `before.md` 保存固定来源，`after.md` 则保留有效正文和跳转目标，在此基础上重组层级并补充证据。两侧都通过 GitHub Markdown API 渲染，而且只截取 README 正文，不包含仓库导航、目录树或侧栏。每侧保持 1440 像素宽并按各自内容自适应高度；2956 像素宽的对比图将原文放左侧、优化版放右侧，较短一侧不会补白。点击预览图可查看原始尺寸。
 
 <!-- showcase:start -->
 
@@ -112,7 +112,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>应用 / 前端</h3>
-<a href="examples/application-frontend/after.md"><img src="assets/showcase/application-frontend-comparison.png" alt="已归档 amfoss 社区网站 README 优化前后对比"></a>
+<a href="assets/showcase/application-frontend-comparison.png"><img src="assets/showcase/application-frontend-comparison.png" alt="已归档 amfoss 社区网站 README 优化前后对比"></a>
 <p><a href="https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md">固定来源</a> · <a href="examples/application-frontend/after.md">优化后 README</a></p>
 <p>保留原安装与 Surge 说明，同时分离指向其他仓库的旧 Badge 和互相冲突的运行时证据。</p>
 </td>
@@ -120,7 +120,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>Library / SDK</h3>
-<a href="examples/library-sdk/after.md"><img src="assets/showcase/library-sdk-comparison.png" alt="已归档 pylsh Python 库 README 优化前后对比"></a>
+<a href="assets/showcase/library-sdk-comparison.png"><img src="assets/showcase/library-sdk-comparison.png" alt="已归档 pylsh Python 库 README 优化前后对比"></a>
 <p><a href="https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md">固定来源</a> · <a href="examples/library-sdk/after.md">优化后 README</a></p>
 <p>保留安装、依赖、Notebook 和署名内容，再补充源码支持的 API 示例与版本冲突边界。</p>
 </td>
@@ -128,7 +128,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>CLI / 自动化</h3>
-<a href="examples/cli-scaffold/after.md"><img src="assets/showcase/cli-scaffold-comparison.png" alt="已归档 gmusicapi scripts CLI README 优化前后对比"></a>
+<a href="assets/showcase/cli-scaffold-comparison.png"><img src="assets/showcase/cli-scaffold-comparison.png" alt="已归档 gmusicapi scripts CLI README 优化前后对比"></a>
 <p><a href="https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md">固定来源</a> · <a href="examples/cli-scaffold/after.md">优化后 README</a></p>
 <p>把后继项目设为首要动作，还原五个真实入口，并写明凭据与网络边界。</p>
 </td>
@@ -136,7 +136,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>Fork / 下游仓库</h3>
-<a href="examples/fork-downstream/after.md"><img src="assets/showcase/fork-downstream-comparison.png" alt="已归档 bitcoin libbase58 Fork README 优化前后对比"></a>
+<a href="assets/showcase/fork-downstream-comparison.png"><img src="assets/showcase/fork-downstream-comparison.png" alt="已归档 bitcoin libbase58 Fork README 优化前后对比"></a>
 <p><a href="https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md">固定来源</a> · <a href="examples/fork-downstream/after.md">优化后 README</a></p>
 <p>完整保留原 C API 指南，再补充缺失的上游关系、构建路径、版本和支持边界。</p>
 </td>
@@ -144,7 +144,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>研究 / 可复现性</h3>
-<a href="examples/research-reproducibility/after.md"><img src="assets/showcase/research-reproducibility-comparison.png" alt="IBM adaptive federated learning 研究代码 README 优化前后对比"></a>
+<a href="assets/showcase/research-reproducibility-comparison.png"><img src="assets/showcase/research-reproducibility-comparison.png" alt="IBM adaptive federated learning 研究代码 README 优化前后对比"></a>
 <p><a href="https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md">固定来源</a> · <a href="examples/research-reproducibility/after.md">优化后 README</a></p>
 <p>保留论文、引用、数据集、实验流程、输出和贡献者信息，同时明确未执行验证的复现边界。</p>
 </td>
@@ -152,7 +152,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>数据集 / 科研产物</h3>
-<a href="examples/dataset-artifact/after.md"><img src="assets/showcase/dataset-artifact-comparison.png" alt="HICO-DET 科学数据集仓库 README 优化前后对比"></a>
+<a href="assets/showcase/dataset-artifact-comparison.png"><img src="assets/showcase/dataset-artifact-comparison.png" alt="HICO-DET 科学数据集仓库 README 优化前后对比"></a>
 <p><a href="https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md">固定来源</a> · <a href="examples/dataset-artifact/after.md">优化后 README</a></p>
 <p>保留九个工具链接、安装步骤、三篇引用、数据集类入口和许可证，再补充结构与数据权利说明。</p>
 </td>
@@ -160,7 +160,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>Skills / 资源集合</h3>
-<a href="examples/resource-collection/after.md"><img src="assets/showcase/resource-collection-comparison.png" alt="已归档 Awesome WebVR 资源集合 README 优化前后对比"></a>
+<a href="assets/showcase/resource-collection-comparison.png"><img src="assets/showcase/resource-collection-comparison.png" alt="已归档 Awesome WebVR 资源集合 README 优化前后对比"></a>
 <p><a href="https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md">固定来源</a> · <a href="examples/resource-collection/after.md">优化后 README</a></p>
 <p>保留十个资源的直接跳转，将其重排为带数量索引的分类表，并补充维护与许可证提示。</p>
 </td>
@@ -168,7 +168,7 @@ Skill 大致按以下优先级检查信息：
 <tr>
 <td width="100%" valign="top">
 <h3>设计资源</h3>
-<a href="examples/design-resource/after.md"><img src="assets/showcase/design-resource-comparison.png" alt="已归档前端设计资源集合 README 优化前后对比"></a>
+<a href="assets/showcase/design-resource-comparison.png"><img src="assets/showcase/design-resource-comparison.png" alt="已归档前端设计资源集合 README 优化前后对比"></a>
 <p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">固定来源</a> · <a href="examples/design-resource/after.md">优化后 README</a></p>
 <p>保留横幅、贡献入口、全部三个资源以及原有 52 个分类跳转标签；适配后的表格让每个标签都指向真实的覆盖说明，而不是把导航降级成纯文本。</p>
 </td>
