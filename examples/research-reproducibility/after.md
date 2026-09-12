@@ -1,16 +1,18 @@
-# Adaptive Federated Learning — reproducibility snapshot
+# Adaptive Federated Learning in Resource-Constrained Edge Systems
 
-> **README Skills showcase rewrite.** This is not an IBM publication. It documents [`IBM/adaptive-federated-learning@b6bc482`](https://github.com/IBM/adaptive-federated-learning/tree/b6bc482bf2aac15c28b50125ecc6f3e0096c5149).
+[![Status: archived](https://img.shields.io/badge/status-archived-6e7781.svg)](https://github.com/IBM/adaptive-federated-learning) [![TensorFlow: 1.x](https://img.shields.io/badge/TensorFlow-1.x-ff6f00.svg)](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/requirements.txt) [![License: MIT](https://img.shields.io/badge/license-MIT-2da44e.svg)](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/LICENSE)
 
-Source accompanying the 2019 IEEE JSAC paper “Adaptive federated learning in resource constrained edge computing systems.”
+> **README Skills optimization demo.** This is not an IBM publication. It preserves the original paper, citation, dataset, experiment, configuration, output, and contributor information while documenting [`IBM/adaptive-federated-learning@b6bc482`](https://github.com/IBM/adaptive-federated-learning/tree/b6bc482bf2aac15c28b50125ecc6f3e0096c5149).
+
+Source code accompanying the paper S. Wang, T. Tuor, T. Salonidis, K. K. Leung, C. Makaya, T. He, and K. Chan, “Adaptive federated learning in resource constrained edge computing systems,” *IEEE Journal on Selected Areas in Communications*, vol. 37, no. 6, pp. 1205–1221, Jun. 2019.
 
 ## Reproducibility status
 
-This repository is archived. The code and experiment instructions exist, but this showcase did **not** execute the legacy TensorFlow environment or reproduce the paper's numerical results.
+The repository is archived. The code and experiment instructions exist, but this showcase did **not** execute the legacy TensorFlow environment or reproduce the paper's numerical results.
 
-The original README says the produced plot should look similar to selected Figure 4 subfigures, with higher fluctuation. Treat that as an author expectation—not a verification tolerance.
+The original README says the plot should look similar to the SVM (SGD) subfigures in Figure 4, with higher fluctuation. Treat that as an author expectation, not a verified reproduction tolerance.
 
-## Environment recorded by the snapshot
+## Recorded environment
 
 [`requirements.txt`](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/requirements.txt) declares:
 
@@ -19,22 +21,57 @@ The original README says the produced plot should look similar to selected Figur
 - Matplotlib `>=3.0.3`;
 - NumPy `>=1.16.2`.
 
-Operating system, hardware, and exact dependency lock versions are not specified.
+Operating system, hardware, and exact lock versions are not specified.
+
+## Getting started
+
+Install the recorded dependencies in an isolated historical environment:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Download the datasets manually into `datasets`:
+
+- For MNIST, download the standalone files from <http://yann.lecun.com/exdb/mnist/> into `datasets/mnist`.
+- For CIFAR-10, download the binary version from <https://www.cs.toronto.edu/~kriz/cifar.html>, extract the standalone `*.bin` files, and place them in `datasets/cifar-10-batches-bin`.
 
 ## Historical experiment flow
 
-1. Download MNIST or CIFAR-10 manually into the paths described by the [source README](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md).
-2. Review [`config.py`](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/config.py). The fixed default selects MNIST even/odd, a smooth SVM, five clients, and two simulation seeds.
-3. Start `server.py` and wait for its incoming-connection message.
-4. Start five `client.py` processes on the same machine.
-5. Run `plot_multi_run.py` after all processes finish.
+1. Review [`config.py`](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/config.py). The fixed default selects MNIST even/odd, a smooth SVM, five clients, and two simulation seeds.
+2. Run `server.py` and wait for `Waiting for incoming connections...`.
+3. Run five parallel `client.py` instances on the same machine as the server.
+4. Watch the server and clients for message-exchange output; the original README says the run takes a few minutes.
+5. After all processes finish, run `plot_multi_run.py` to produce the plot.
 
-The configuration writes `results/SingleRun.csv` or `results/MultipleRuns.csv`. Existing CSV data is appended, so isolate or remove previous results only after preserving anything needed.
+## Code structure and outputs
 
-## Supported experiment branches
+All configuration options are in `config.py`, which also explains the available setups. The fixed configuration includes paths for MNIST with SVM, MNIST with CNN, and CIFAR-10 with CNN; only one setup is active at a time.
 
-The fixed configuration contains paths for MNIST with SVM, MNIST with CNN, and CIFAR-10 with CNN. Only one configuration is active at a time. Extending the code to other datasets or models is possible in source, but is not a supported-result claim.
+Results are saved as CSV files under `results`. New data is appended to an existing file. Preserve any needed output before deleting or isolating old CSV files for a new experiment.
 
-## Citation and license
+The original README says the code can be extended to other datasets and models. That is an extensibility note, not evidence that other combinations reproduce supported results.
 
-Use the complete citation provided in the [fixed source README](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md). The repository snapshot includes an [MIT license](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/LICENSE); downloaded datasets retain their own terms.
+## Citation
+
+When using this code for scientific publications, cite the accompanying paper:
+
+```bibtex
+@article{wang2019adaptive,
+  title={Adaptive federated learning in resource constrained edge computing systems},
+  author={Wang, Shiqiang and Tuor, Tiffany and Salonidis, Theodoros and Leung, Kin K and Makaya, Christian and He, Ting and Chan, Kevin},
+  journal={IEEE Journal on Selected Areas in Communications},
+  volume={37},
+  number={6},
+  pages={1205-1221},
+  year={2019}
+}
+```
+
+## Contributors
+
+The original README credits Shiqiang Wang and Tiffany Tuor.
+
+## License
+
+The repository snapshot includes an [MIT license](https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/LICENSE). Downloaded datasets retain their own terms.

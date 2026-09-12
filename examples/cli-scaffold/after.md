@@ -1,12 +1,14 @@
-# gmusicapi-scripts — deprecated
+# gmusicapi-scripts — deprecated command-line tools
 
-> **README Skills showcase rewrite.** This is not an upstream README. It documents [`thebigmunch/gmusicapi-scripts@5492593`](https://github.com/thebigmunch/gmusicapi-scripts/tree/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8).
+[![Status: deprecated](https://img.shields.io/badge/status-deprecated-b54708.svg)](https://github.com/thebigmunch/gmusicapi-scripts) [![License: MIT](https://img.shields.io/badge/license-MIT-2da44e.svg)](https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/LICENSE)
+
+> **README Skills optimization demo.** This is not an upstream README. It retains the original deprecation route and adds the command surface and safety boundaries found in [`thebigmunch/gmusicapi-scripts@5492593`](https://github.com/thebigmunch/gmusicapi-scripts/tree/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8).
 
 This archived Python package exposed five command-line workflows built on `gmusicapi-wrapper` and `gmusicapi`.
 
 ## Use the successor
 
-The project is deprecated in favor of [`thebigmunch/google-music-scripts`](https://github.com/thebigmunch/google-music-scripts). Start there rather than installing this historical snapshot.
+**gmusicapi-scripts is deprecated in favor of [google-music-scripts](https://github.com/thebigmunch/google-music-scripts).** Start there rather than installing this historical snapshot.
 
 No current service availability, authentication flow, dependency compatibility, or safe migration path was verified for this showcase.
 
@@ -14,13 +16,13 @@ No current service availability, authentication flow, dependency compatibility, 
 
 The fixed [`setup.py`](https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/setup.py) registered:
 
-| Command | Source module |
-| --- | --- |
-| `gmdelete` | `gmusicapi_scripts.gmdelete` |
-| `gmdownload` | `gmusicapi_scripts.gmdownload` |
-| `gmsearch` | `gmusicapi_scripts.gmsearch` |
-| `gmsync` | `gmusicapi_scripts.gmsync` |
-| `gmupload` | `gmusicapi_scripts.gmupload` |
+| Command | Source module | Historical purpose |
+| --- | --- | --- |
+| `gmdelete` | `gmusicapi_scripts.gmdelete` | Delete selected library content |
+| `gmdownload` | `gmusicapi_scripts.gmdownload` | Download music locally |
+| `gmsearch` | `gmusicapi_scripts.gmsearch` | Search the remote library |
+| `gmsync` | `gmusicapi_scripts.gmsync` | Synchronize local and remote state |
+| `gmupload` | `gmusicapi_scripts.gmupload` | Upload local music |
 
 The package rejected Python versions earlier than 3.4 and listed Python 3.4/3.5 classifiers. That is historical metadata, not a modern compatibility claim.
 

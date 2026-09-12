@@ -10,15 +10,16 @@ Do not depend on custom CSS, JavaScript, script tags, iframes, forms, or arbitra
 
 ## Badges
 
-Badges are status metadata, not the introduction.
+Badges can expose compact status metadata or high-value navigation, but they are not the introduction.
 
 - Perform a badge pass by default for generate, optimize, restructure, and release-sync tasks. When authoritative evidence and stable targets exist, place a compact badge row near the identity block; an evidence gap means omitting that badge, not omitting the badge pass.
-- Keep only decision-relevant signals such as CI, package version, license, coverage, documentation, release, or maintained compatibility.
+- Keep only decision-relevant signals such as CI, package version, license, coverage, documentation, release, maintained compatibility, or an existing localized README destination.
 - Link each badge to its authoritative target.
 - Keep ordering stable and avoid duplicate vanity metrics.
 - Verify branch names, workflow names, package identifiers, and endpoints.
 - Never manufacture a passing, current, supported, secure, or released state merely to fill the row. Preserve nearby text so the document remains understandable when badges fail.
 - Treat third-party badge services as external dependencies; the README must remain understandable when they fail.
+- Treat language badges as navigation rather than project-status evidence. When two or more localized README files already exist and badges fit the repository style, default to a compact linked language row near the identity block. Use explicit language names, link every badge to the corresponding file, and keep the destination understandable through alt text when the image service fails.
 
 ## Images and demos
 
@@ -28,6 +29,7 @@ Badges are status metadata, not the introduction.
 - Use `<picture>` with light/dark sources when contrast requires it, with a normal fallback `<img>`.
 - Prefer short, compressed, captioned demos. Provide an adjacent text explanation for motion or complex visuals.
 - Do not add screenshots containing secrets, private data, personal paths, or unlicensed third-party content.
+- For before/after README evidence, use equivalent content boundaries. Capture the rendered README body rather than repository navigation, file trees, sidebars, or unrelated host chrome; size each capture to its actual content with a documented maximum instead of padding short documents to a fixed height.
 
 ## Architecture and diagrams
 

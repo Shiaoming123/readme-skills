@@ -1,6 +1,8 @@
 # libbase58 0.1.4 — archived fork
 
-> **README Skills showcase rewrite.** This is not an upstream README or a Bitcoin project release. It documents [`bitcoin/libbase58@b1dd03f`](https://github.com/bitcoin/libbase58/tree/b1dd03fa8d1be4be076bb6152325c6b5cf64f678).
+[![Version: 0.1.4](https://img.shields.io/badge/version-0.1.4-0969da.svg)](https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/configure.ac) [![Status: archived](https://img.shields.io/badge/status-archived-6e7781.svg)](https://github.com/bitcoin/libbase58) [![License: MIT](https://img.shields.io/badge/license-MIT-2da44e.svg)](https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/COPYING)
+
+> **README Skills optimization demo.** This is not an upstream README or a Bitcoin project release. It preserves the complete original API guidance and adds identity, build, lifecycle, and support context for [`bitcoin/libbase58@b1dd03f`](https://github.com/bitcoin/libbase58/tree/b1dd03fa8d1be4be076bb6152325c6b5cf64f678).
 
 C routines for raw Base58 and Base58Check encoding, decoding, and validation.
 
@@ -22,16 +24,65 @@ make
 
 The optional command-line tool depends on libgcrypt. Tests also use `xxd`. This build was not run for the showcase, and current operating-system or compiler compatibility is unknown.
 
-## C API overview
+## Initialisation
 
-Include [`libbase58.h`](https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/libbase58.h) and use:
+Before using libbase58 for Base58Check, provide a SHA-256 function with this signature:
 
-- `b58tobin` to decode Base58;
-- `b58enc` to encode Base58;
-- `b58check` to validate Base58Check data;
-- `b58check_enc` to encode Base58Check data.
+```c
+bool my_sha256(void *digest, const void *data, size_t datasz);
+```
 
-Base58Check operations require the caller to provide a SHA-256 implementation through `b58_sha256_impl`. Raw Base58 operations do not.
+Assign it to `b58_sha256_impl`:
+
+```c
+b58_sha256_impl = my_sha256;
+```
+
+This is required only for Base58Check. Raw Base58 does not need SHA-256.
+
+## Decoding Base58
+
+Allocate a buffer for the binary data, initialize a variable with the buffer size, and call:
+
+```c
+bool b58tobin(void *bin, size_t *binsz, const char *b58, size_t b58sz);
+```
+
+The canonical Base58 byte length is assigned to `binsz` on success and can be larger than the actual buffer when the input has many leading zeroes. The full binary buffer is used regardless of that canonical length. If `b58sz` is zero, it is initialized with `strlen(b58)`; a true zero-length Base58 string is not supported.
+
+## Validating Base58Check
+
+After calling `b58tobin`, validate Base58Check data with:
+
+```c
+int b58check(const void *bin, size_t binsz, const char *b58, size_t b58sz);
+```
+
+Use the same buffers passed to `b58tobin`. A negative return value means an error occurred; otherwise the value is the Base58Check version byte from the decoded data.
+
+## Encoding Base58
+
+Allocate a string for the Base58 content, initialize a `size_t` with the allocation size, and call:
+
+```c
+bool b58enc(char *b58, size_t *b58sz, const void *data, size_t binsz);
+```
+
+Pass a pointer to the string-size variable, not the size itself. On return, that variable contains the bytes used, including the null terminator. The function returns `false` on failure or when the output buffer is too small, and `true` on success.
+
+## Encoding Base58Check
+
+Base58Check encoding also requires a version byte:
+
+```c
+bool b58check_enc(
+    char *b58c,
+    size_t *b58c_sz,
+    uint8_t ver,
+    const void *data,
+    size_t datasz
+);
+```
 
 ## Support and license
 

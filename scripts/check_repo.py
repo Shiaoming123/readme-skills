@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -98,25 +99,43 @@ def main() -> int:
         text = readme.read_text(encoding="utf-8")
         if "img.shields.io/badge/version" not in text or "img.shields.io/badge/license" not in text:
             fail(f"default version/license badges are missing from {readme.name}")
+        if "img.shields.io/badge/README-English" not in text or "README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" not in text:
+            fail(f"language navigation badges are missing from {readme.name}")
         if '<td width="50%"' in text:
             fail(f"showcase comparisons are still constrained to half width in {readme.name}")
     for case in cases:
+        if case.get("mode") != "optimize":
+            fail(f"showcase case is not preservation-first optimize mode: {case.get('id')}")
         if not SHA_RE.fullmatch(case.get("sha", "")):
             fail(f"invalid fixed SHA for {case.get('id')}")
         if not case.get("source_readme", "").startswith("https://github.com/"):
             fail(f"non-GitHub source README for {case['id']}")
         if not case.get("license_url", "").startswith("https://github.com/"):
             fail(f"missing source license URL for {case['id']}")
-        require_file(case["after_readme"])
+        before_readme = require_file(case["before_readme"])
+        if hashlib.sha256(before_readme.read_bytes()).hexdigest() != case.get("source_sha256"):
+            fail(f"fixed source README changed: {case['id']}")
+        after_readme = require_file(case["after_readme"])
+        after_text = after_readme.read_text(encoding="utf-8")
+        for target in case.get("preserved_links", []):
+            if target not in after_text:
+                fail(f"preserved source link missing from {case['id']}: {target}")
+        if len(after_text) <= len(before_readme.read_text(encoding="utf-8")):
+            fail(f"optimized README does not retain and extend source content: {case['id']}")
         before = require_file(case["before_image"])
         after = require_file(case["after_image"])
         comparison = require_file(case["comparison_image"])
-        if png_size(before) != (1440, 2400):
-            fail(f"unexpected before image size for {case['id']}: {png_size(before)}")
-        if png_size(after) != (1440, 2400):
-            fail(f"unexpected after image size for {case['id']}: {png_size(after)}")
-        if png_size(comparison) != (1440, 5120):
-            fail(f"unexpected comparison image size for {case['id']}: {png_size(comparison)}")
+        before_size = png_size(before)
+        after_size = png_size(after)
+        comparison_size = png_size(comparison)
+        if before_size[0] != 1440 or not 160 <= before_size[1] <= 3600:
+            fail(f"unexpected content-sized before image for {case['id']}: {before_size}")
+        if after_size[0] != 1440 or not 160 <= after_size[1] <= 3600:
+            fail(f"unexpected content-sized after image for {case['id']}: {after_size}")
+        if comparison_size[0] != 1440 or not 160 <= comparison_size[1] <= 7600:
+            fail(f"unexpected comparison image size for {case['id']}: {comparison_size}")
+        if comparison_size[1] >= 7600 and before_size[1] + after_size[1] < 7300:
+            fail(f"comparison image appears padded instead of content-sized: {case['id']}")
         if case["comparison_image"] not in root_text:
             fail(f"comparison image is not linked from a root README: {case['id']}")
 

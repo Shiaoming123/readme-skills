@@ -18,13 +18,13 @@ Every public-repository showcase case must record:
 - repository and fixed commit SHA;
 - direct source and README links;
 - repository license evidence;
-- the factual files used for the rewrite;
+- the factual files used for the optimization;
 - the captured page date;
 - which elements are screenshot excerpts, project facts, and original rewritten content.
 
 Screenshots remain visual excerpts of their source repositories and do not transfer ownership of upstream names, logos, code, or documentation. Each comparison must link back to its source and must not imply endorsement or affiliation.
 
-The `*-after.png` files are screenshots of this repository's complete demonstration rewrites after GitHub Markdown API rendering. Each `*-comparison.png` places the fixed upstream screenshot above that rendered rewrite; it does not substitute a summary card for the output.
+Each case stores the fixed upstream Markdown in a versioned, SHA-256-locked `before.md` and the preservation-first optimization in `after.md`. Both are rendered through GitHub's Markdown API. The `*-before.png` and `*-after.png` files contain only the rendered README body, without GitHub navigation, repository file trees, sidebars, or unrelated page chrome. Their heights follow actual content up to the documented maximum instead of using blank fixed-height canvases. Each `*-comparison.png` places those equivalent content boundaries together; it does not substitute a summary card for either document.
 
 ## License status
 

@@ -4,15 +4,17 @@
 
 **先匹配仓库，再写 README 的证据优先 Codex Skill。**
 
-[English](README.md) · [研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
+[![English README](https://img.shields.io/badge/README-English-0969da.svg)](README.md) [![简体中文 README](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-8250df.svg)](README.zh-CN.md)
 
-[![当前版本 v0.1.1](https://img.shields.io/badge/version-v0.1.1-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[研究报告](research/top-100-readme-study-2026-09-11.md) · [Skill 入口](SKILL.md)
+
+[![当前版本 v0.2.0](https://img.shields.io/badge/version-v0.2.0-0969da.svg)](VERSION) [![MIT 许可证](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
 README Skills 会先检查真实项目，识别读者最需要完成的第一步，再创建或优化仓库首页。它不会用同一份通用模板套所有项目，而是根据产物类型、访问目的和生命周期选择结构。
 
-> **当前版本：** `v0.1.1`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
+> **当前版本：** `v0.2.0`。Skill 采用 MIT 许可证，并已作为完整仓库包通过本地校验。
 
 ![README Skills 通过检查、分类、写作和验证，将仓库证据转化为匹配项目的 README。](assets/workflow.svg)
 
@@ -52,7 +54,7 @@ Skill 允许隐式触发，因此常规仓库 README 工作也能自动匹配。
 | --- | --- | --- |
 | `audit-only` | 用户只要求审查或分析 | 不修改文件，只输出基于证据的问题 |
 | `generate` | 根目录不存在可用 README | 审查仓库后生成最小完整文档 |
-| `optimize` | 内容基本准确，但清晰度或表现不足 | 保留现有结构，进行聚焦优化 |
+| `optimize` | 内容基本准确，但清晰度、导航或表现不足 | 保留有效内容和跳转目标，再进行聚焦优化 |
 | `restructure` | 内容陈旧、矛盾或以实现细节为中心 | 保留有效材料，重建读者路径 |
 | `release-sync` | 发版改变了版本、支持范围、迁移、截图或可用性 | 只同步受本次发版影响的内容 |
 
@@ -94,15 +96,15 @@ Skill 大致按以下优先级检查信息：
 
 默认使用可移植的 GitHub Flavored Markdown 和仓库内资产。只有确实能帮助读者判断或行动时，才使用受限 HTML、明暗主题 `<picture>`、表格、`<details>`、SVG 架构图、演示、徽章或动态趋势组件。
 
-动态第三方组件必须有静态或文字回退。徽章是状态元数据，不是开场白；复杂图示必须提供可读总览和等价文字说明。
+动态第三方组件必须有静态或文字回退。Badge 可以承载简洁状态或高价值导航，但不是开场白；复杂图示必须提供可读总览和等价文字说明。
 
-生成、优化、重构和发版同步 README 时会默认执行 Badge 检查。只有版本、工作流、软件包、许可证或文档目标能够验证时才加入对应 Badge；证据缺失不会被包装成装饰性的“通过”状态。
+生成、优化、重构和发版同步 README 时会默认执行 Badge 检查。只有版本、工作流、软件包、许可证或文档目标能够验证时才加入对应 Badge；证据缺失不会被包装成装饰性的“通过”状态。已有多语言 README 也会默认评估是否适合使用语言导航 Badge，本页顶部就是对应示例。
 
 ## 前后对比案例
 
 案例采用公开仓库的固定 README 快照，这些快照对相应仓库类型存在明显的信息缺口。我们只评价该版本 README 的信息完整度，不评价项目本身；每个案例都会保留来源 URL、提交 SHA、许可证证据和事实审计。
 
-每张对比图包含两张 1440×2400 的真实截图：上方是固定提交中的原 GitHub README，下方是对应 `after.md` 完整改写经 GitHub Markdown API 渲染后的页面。长图会保留大面积正文与多个章节层级；超出视口的内容可通过“示范改写”阅读完整输出。
+八组案例现在全部按 `optimize` 模式处理，而不是把原文替换成摘要卡。版本化的 `before.md` 保存固定来源，`after.md` 则保留有效正文和跳转目标，在此基础上重组层级并补充证据。上下两部分都通过 GitHub Markdown API 渲染，而且只截取 README 正文，不包含仓库导航、目录树或侧栏。宽度统一为 1440 像素，高度根据实际内容自适应并受明确上限约束，不再用固定高度制造底部空白。
 
 <!-- showcase:start -->
 
@@ -111,23 +113,23 @@ Skill 大致按以下优先级检查信息：
 <td width="100%" valign="top">
 <h3>应用 / 前端</h3>
 <a href="examples/application-frontend/after.md"><img src="assets/showcase/application-frontend-comparison.png" alt="已归档 amfoss 社区网站 README 优化前后对比"></a>
-<p><a href="https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md">固定来源</a> · <a href="examples/application-frontend/after.md">示范改写</a></p>
-<p>纠正仓库身份，暴露运行时证据冲突，并从 manifest 中还原开发路径。</p>
+<p><a href="https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md">固定来源</a> · <a href="examples/application-frontend/after.md">优化后 README</a></p>
+<p>保留原安装与 Surge 说明，同时分离指向其他仓库的旧 Badge 和互相冲突的运行时证据。</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Library / SDK</h3>
 <a href="examples/library-sdk/after.md"><img src="assets/showcase/library-sdk-comparison.png" alt="已归档 pylsh Python 库 README 优化前后对比"></a>
-<p><a href="https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md">固定来源</a> · <a href="examples/library-sdk/after.md">示范改写</a></p>
-<p>补充由源码支持的 API 示例，同时分开呈现依赖、兼容性和版本冲突。</p>
+<p><a href="https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md">固定来源</a> · <a href="examples/library-sdk/after.md">优化后 README</a></p>
+<p>保留安装、依赖、Notebook 和署名内容，再补充源码支持的 API 示例与版本冲突边界。</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>CLI / 自动化</h3>
 <a href="examples/cli-scaffold/after.md"><img src="assets/showcase/cli-scaffold-comparison.png" alt="已归档 gmusicapi scripts CLI README 优化前后对比"></a>
-<p><a href="https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md">固定来源</a> · <a href="examples/cli-scaffold/after.md">示范改写</a></p>
+<p><a href="https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md">固定来源</a> · <a href="examples/cli-scaffold/after.md">优化后 README</a></p>
 <p>把后继项目设为首要动作，还原五个真实入口，并写明凭据与网络边界。</p>
 </td>
 </tr>
@@ -135,45 +137,45 @@ Skill 大致按以下优先级检查信息：
 <td width="100%" valign="top">
 <h3>Fork / 下游仓库</h3>
 <a href="examples/fork-downstream/after.md"><img src="assets/showcase/fork-downstream-comparison.png" alt="已归档 bitcoin libbase58 Fork README 优化前后对比"></a>
-<p><a href="https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md">固定来源</a> · <a href="examples/fork-downstream/after.md">示范改写</a></p>
-<p>明确上游关系和未记录的分化原因，并补回构建与 C API 入口。</p>
+<p><a href="https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md">固定来源</a> · <a href="examples/fork-downstream/after.md">优化后 README</a></p>
+<p>完整保留原 C API 指南，再补充缺失的上游关系、构建路径、版本和支持边界。</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>研究 / 可复现性</h3>
 <a href="examples/research-reproducibility/after.md"><img src="assets/showcase/research-reproducibility-comparison.png" alt="IBM adaptive federated learning 研究代码 README 优化前后对比"></a>
-<p><a href="https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md">固定来源</a> · <a href="examples/research-reproducibility/after.md">示范改写</a></p>
-<p>分离旧环境事实、实验配置、输出产物和未经执行验证的复现边界。</p>
+<p><a href="https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md">固定来源</a> · <a href="examples/research-reproducibility/after.md">优化后 README</a></p>
+<p>保留论文、引用、数据集、实验流程、输出和贡献者信息，同时明确未执行验证的复现边界。</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>数据集 / 科研产物</h3>
 <a href="examples/dataset-artifact/after.md"><img src="assets/showcase/dataset-artifact-comparison.png" alt="HICO-DET 科学数据集仓库 README 优化前后对比"></a>
-<p><a href="https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md">固定来源</a> · <a href="examples/dataset-artifact/after.md">示范改写</a></p>
-<p>区分代码与数据权利，说明标注结构，并标出未做校验的下载辅助脚本。</p>
+<p><a href="https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md">固定来源</a> · <a href="examples/dataset-artifact/after.md">优化后 README</a></p>
+<p>保留九个工具链接、安装步骤、三篇引用、数据集类入口和许可证，再补充结构与数据权利说明。</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Skills / 资源集合</h3>
 <a href="examples/resource-collection/after.md"><img src="assets/showcase/resource-collection-comparison.png" alt="已归档 Awesome WebVR 资源集合 README 优化前后对比"></a>
-<p><a href="https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md">固定来源</a> · <a href="examples/resource-collection/after.md">示范改写</a></p>
-<p>把历史列表改为有范围的分类体系，并明确收录、维护和第三方许可证边界。</p>
+<p><a href="https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md">固定来源</a> · <a href="examples/resource-collection/after.md">优化后 README</a></p>
+<p>保留十个资源的直接跳转，将其重排为带数量索引的分类表，并补充维护与许可证提示。</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>设计资源</h3>
 <a href="examples/design-resource/after.md"><img src="assets/showcase/design-resource-comparison.png" alt="已归档前端设计资源集合 README 优化前后对比"></a>
-<p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">固定来源</a> · <a href="examples/design-resource/after.md">示范改写</a></p>
-<p>用快照中的真实内容替代过度承诺的分类，并补充链接、署名和许可证说明。</p>
+<p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">固定来源</a> · <a href="examples/design-resource/after.md">优化后 README</a></p>
+<p>保留横幅、贡献入口、原始分类和全部三个资源，并直观标出哪些分类在快照中确有内容。</p>
 </td>
 </tr>
 </table>
 
-[完整案例索引](examples/README.md)记录了审查方法；[候选案例调研](research/candidate-cases.md)保存主选与备选集合、筛选理由、固定 SHA、源码文件和许可证证据。这些只是文档改写示范，没有向上游提交。
+[完整案例索引](examples/README.md)记录了审查方法；[候选案例调研](research/candidate-cases.md)保存主选与备选集合、筛选理由、固定 SHA、源码文件和许可证证据。这些只是文档优化示范，没有向上游提交。
 
 <!-- showcase:end -->
 

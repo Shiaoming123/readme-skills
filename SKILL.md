@@ -39,7 +39,7 @@ Choose one mode automatically:
 
 - **audit-only**: the user asks for analysis, review, scoring, or recommendations without requesting edits;
 - **generate**: no usable root README exists;
-- **optimize**: the existing README is substantially accurate and needs focused clarity, ordering, or presentation improvements;
+- **optimize**: the existing README is substantially accurate and needs focused clarity, ordering, navigation, or presentation improvements while retaining its valid content;
 - **restructure**: the README is outdated, audience-misaligned, contradictory, or organized around implementation instead of the reader journey;
 - **release-sync**: a release, version, support boundary, migration, or shipped capability must be synchronized into the README.
 
@@ -87,12 +87,15 @@ This is a composer, not a mandatory template. Omit unsupported or irrelevant sec
 ### 6. Write or edit
 
 - Preserve valid branding, voice, links, attribution, screenshots, and contributor intent.
+- Before optimizing, inventory the existing headings, links, resource entries, examples, commands, assets, badges, citations, and attribution. Keep every valid reader-facing item reachable in the result; do not replace the original body with a summary card or a link back to the source.
+- Remove or replace existing material only when it is unsupported, stale, duplicated, unsafe, broken, or outside the requested scope. Record the reason and preserve an honest historical route when removal would otherwise erase useful context.
+- For resource collections, keep retained entries directly clickable. Improve scanning with categories, indexes, tables, annotations, counts, formats, or maintenance labels rather than substituting an inventory count for the resources themselves.
 - Put the smallest useful example before exhaustive reference material.
 - Use concrete verbs, short paragraphs, descriptive headings, and copyable commands.
 - State prerequisites before commands and explain placeholders at the point of use.
 - Separate current behavior from roadmap, planned platforms, experiments, and optional integrations.
 - Keep important limitations visible near the relevant promise or action.
-- Run a badge pass by default in generate, optimize, restructure, and release-sync work. Add a compact row of verified, decision-relevant badges near the project identity when authoritative targets exist; omit unsupported badge categories instead of fabricating status.
+- Run a badge pass by default in generate, optimize, restructure, and release-sync work. Add a compact row of verified, decision-relevant status badges and useful navigation badges near the project identity when authoritative targets exist; omit unsupported badge categories instead of fabricating status.
 - When any existing localized README changes, apply the same material update across the full discovered language set in this task unless the user explicitly excludes files. Synchronize meaning, commands, versions, links, support, security, and legal boundaries; literal sentence parity is not required.
 - In restructure mode, identify what is preserved, moved, replaced, added, or removed before making broad changes.
 - Apply visual, HTML, diagram, badge, dynamic-component, multilingual, fork, and governance rules from [presentation-and-governance.md](references/presentation-and-governance.md) when relevant.

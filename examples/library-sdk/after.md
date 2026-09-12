@@ -1,16 +1,18 @@
 # pylsh — archived Python library
 
-> **README Skills showcase rewrite.** This is not an upstream README. It documents [`mattilyra/LSH@a57069b`](https://github.com/mattilyra/LSH/tree/a57069bfb70f4b620d47931f81966b5a73c1b480).
+[![Status: archived](https://img.shields.io/badge/status-archived-6e7781.svg)](https://github.com/mattilyra/LSH) [![License: MIT](https://img.shields.io/badge/license-MIT-2da44e.svg)](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/LICENSE)
 
-`pylsh` implements MinHash locality-sensitive hashing for finding near-duplicate text documents.
+> **README Skills optimization demo.** This is not an upstream README. It preserves the original installation, dependency, attribution, and learning links while documenting [`mattilyra/LSH@a57069b`](https://github.com/mattilyra/LSH/tree/a57069bfb70f4b620d47931f81966b5a73c1b480).
+
+`pylsh` is a Python implementation of locality-sensitive hashing with MinHash for detecting near-duplicate documents. It uses the MurmurHash3 library to create document fingerprints.
 
 ## Project status
 
 This repository is archived. Modern Python, NumPy, compiler, and packaging compatibility are unverified.
 
-Two inspected version sources conflict: [`setup.py`](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/setup.py) declares `0.3.0`, while [`lsh/__init__.py`](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/lsh/__init__.py) declares `0.1.1`. This rewrite does not select one as authoritative.
+Two inspected version sources conflict: [`setup.py`](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/setup.py) declares `0.3.0`, while [`lsh/__init__.py`](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/lsh/__init__.py) declares `0.1.1`. No version badge is shown because the repository does not establish a single authoritative value.
 
-## Source-level example
+## Minimal source-level example
 
 ```python
 from lsh.minhash import MinHasher
@@ -24,21 +26,24 @@ The names and parameters come from [`lsh/minhash.py`](https://github.com/mattily
 
 ## Historical installation
 
-The fixed project uses `setup.py` and compiled extension sources:
+NumPy is required to run the code. Cython is required only when regenerating the hashing and shingling `.cpp` files; by default, `setup.py` uses the pre-generated C++ sources unless `USE_CYTHON` is enabled.
 
 ```bash
+git clone https://github.com/mattilyra/LSH
+cd LSH
 python setup.py install
 ```
 
-`setup.py` declares NumPy and Cython dependencies and defaults to pre-generated C++ sources. A working compiler toolchain may still be required. Prefer an isolated historical environment; no supported Python range is declared.
+A working compiler toolchain may still be required. Prefer an isolated historical environment because no supported Python range is declared.
 
-## Tests and learning material
+## Examples and tests
 
+- The original [Introduction notebook](http://nbviewer.jupyter.org/github/mattilyra/LSH/blob/master/examples/Introduction.ipynb) explains locality-sensitive hashing and parameter selection; it is also present in the repository's `examples` directory.
 - Unit tests are stored under [`lsh/test`](https://github.com/mattilyra/LSH/tree/a57069bfb70f4b620d47931f81966b5a73c1b480/lsh/test).
-- The [introduction notebook](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/examples/Introduction.ipynb) explains parameter selection.
+- `setup.py` declares pytest as a test dependency, but no test run was performed for this documentation example.
 
-The repository declares pytest as a test dependency, but no test run was performed for this documentation example.
+## Attribution and license
 
-## License
+The implementation uses MurmurHash3. Its original attribution link remains available at [aappleby/smhasher](https://github.com/aappleby/smhasher).
 
-The repository snapshot is distributed under the [MIT license](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/LICENSE). MurmurHash3 attribution remains documented by the upstream project.
+The repository snapshot is distributed under the [MIT license](https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/LICENSE). MurmurHash3 remains subject to its own attribution and terms.

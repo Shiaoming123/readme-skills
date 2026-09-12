@@ -8,6 +8,8 @@ import html
 import json
 import os
 from pathlib import Path
+import re
+import shutil
 import subprocess
 import time
 import urllib.error
@@ -45,18 +47,53 @@ def ensure_png(path: Path) -> None:
         raise RuntimeError(f"Screenshot is not a PNG: {path}")
 
 
-def screenshot(edge: Path, url: str, output: Path, profile: Path, size: str) -> None:
-    output.parent.mkdir(parents=True, exist_ok=True)
-    profile.mkdir(parents=True, exist_ok=True)
-    command = [
+CAPTURE_WIDTH = 1440
+MIN_CAPTURE_HEIGHT = 160
+MAX_CAPTURE_HEIGHT = 3600
+MAX_COMPARISON_HEIGHT = 7600
+
+
+def edge_command(edge: Path, profile: Path, size: str) -> list[str]:
+    return [
         str(edge),
         "--headless=new",
         "--disable-gpu",
         "--hide-scrollbars",
         "--no-first-run",
-        "--force-device-scale-factor=1",
+        "--run-all-compositor-stages-before-draw",
+        "--virtual-time-budget=1500",
         f"--user-data-dir={profile}",
         f"--window-size={size}",
+    ]
+
+
+def measure_height(edge: Path, url: str, profile: Path, max_height: int) -> int:
+    profile.mkdir(parents=True, exist_ok=True)
+    completed = subprocess.run(
+        edge_command(edge, profile, f"{CAPTURE_WIDTH},{MIN_CAPTURE_HEIGHT}")
+        + ["--dump-dom", url],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=60,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(f"Edge exited with {completed.returncode} while measuring {url}")
+    match = re.search(r'data-page-height="(\d+)"', completed.stdout)
+    if not match:
+        raise RuntimeError(f"Rendered page did not report its height: {url}")
+    return min(max_height, max(MIN_CAPTURE_HEIGHT, int(match.group(1))))
+
+
+def screenshot(
+    edge: Path, url: str, output: Path, profile: Path, max_height: int = MAX_CAPTURE_HEIGHT
+) -> None:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    height = measure_height(edge, url, profile, max_height)
+    command = edge_command(edge, profile, f"{CAPTURE_WIDTH},{height}") + [
+        "--force-device-scale-factor=1",
         f"--screenshot={output}",
         url,
     ]
@@ -70,8 +107,8 @@ def screenshot(edge: Path, url: str, output: Path, profile: Path, size: str) -> 
     ensure_png(output)
 
 
-def github_markdown(case: dict) -> str:
-    markdown = (ROOT / case["after_readme"]).read_text(encoding="utf-8")
+def github_markdown(case: dict, relative_path: str) -> str:
+    markdown = (ROOT / relative_path).read_text(encoding="utf-8")
     body = json.dumps(
         {"text": markdown, "mode": "gfm", "context": case["repository"]}
     ).encode("utf-8")
@@ -82,6 +119,16 @@ def github_markdown(case: dict) -> str:
         "X-GitHub-Api-Version": "2022-11-28",
     }
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if not token and shutil.which("gh"):
+        completed = subprocess.run(
+            ["gh", "auth", "token"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if completed.returncode == 0:
+            token = completed.stdout.strip()
     if token:
         headers["Authorization"] = f"Bearer {token}"
     request = urllib.request.Request(
@@ -97,25 +144,33 @@ def github_markdown(case: dict) -> str:
         raise RuntimeError(f"GitHub Markdown API request failed: {error.reason}") from error
 
 
-def render_after_html(case: dict, rendered_markdown: str) -> str:
+def resolve_source_targets(rendered_markdown: str, case: dict) -> str:
+    def replace(match: re.Match) -> str:
+        attribute, target = match.group(1), match.group(2)
+        if target.startswith(("http://", "https://", "#", "data:", "mailto:")):
+            return match.group(0)
+        path = target.removeprefix("./").lstrip("/")
+        if attribute == "src":
+            resolved = f"https://raw.githubusercontent.com/{case['repository']}/{case['sha']}/{path}"
+        else:
+            resolved = f"https://github.com/{case['repository']}/blob/{case['sha']}/{path}"
+        return f'{attribute}="{resolved}"'
+
+    return re.sub(r'\b(href|src)="([^"]+)"', replace, rendered_markdown)
+
+
+def render_readme_html(case: dict, rendered_markdown: str) -> str:
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{html.escape(case['repository'])} README Skills preview</title>
+<title>{html.escape(case['repository'])} README content</title>
 <style>
 * {{ box-sizing: border-box; }}
-html, body {{ width: 1440px; min-height: 1200px; margin: 0; }}
-body {{ background: #f6f8fa; color: #1f2328; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
-.topbar {{ height: 64px; background: #24292f; color: #fff; display: flex; align-items: center; padding: 0 42px; font-weight: 650; }}
-.topbar span {{ color: #8c959f; margin: 0 8px; }}
-.repohead {{ height: 92px; padding: 22px 72px; background: #fff; border-bottom: 1px solid #d0d7de; }}
-.repo {{ color: #0969da; font-size: 21px; font-weight: 600; }}
-.notice {{ margin-top: 6px; color: #57606a; font-size: 13px; }}
-.shell {{ width: 1120px; margin: 28px auto 80px; background: #fff; border: 1px solid #d0d7de; border-radius: 8px; overflow: hidden; }}
-.filebar {{ height: 48px; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid #d8dee4; background: #f6f8fa; color: #57606a; font-size: 14px; font-weight: 600; }}
-.markdown-body {{ padding: 34px 40px 60px; overflow-wrap: break-word; }}
+html, body {{ width: {CAPTURE_WIDTH}px; margin: 0; }}
+body {{ background: #fff; color: #1f2328; font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
+.markdown-body {{ width: 1120px; margin: 0 auto; padding: 36px 40px 48px; overflow-wrap: break-word; }}
 .markdown-body h1, .markdown-body h2, .markdown-body h3 {{ margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; }}
 .markdown-body h1 {{ padding-bottom: .3em; border-bottom: 1px solid #d8dee4; font-size: 2em; }}
 .markdown-body h2 {{ padding-bottom: .3em; border-bottom: 1px solid #d8dee4; font-size: 1.5em; }}
@@ -129,18 +184,17 @@ body {{ background: #f6f8fa; color: #1f2328; font: 16px/1.5 -apple-system, Blink
 .markdown-body table {{ border-spacing: 0; border-collapse: collapse; width: max-content; max-width: 100%; }}
 .markdown-body th, .markdown-body td {{ padding: 6px 13px; border: 1px solid #d0d7de; }}
 .markdown-body tr:nth-child(2n) {{ background: #f6f8fa; }}
+.markdown-body img {{ max-width: 100%; height: auto; }}
+.markdown-body hr {{ height: .25em; margin: 24px 0; padding: 0; background: #d8dee4; border: 0; }}
 </style>
+<script>
+function reportHeight() {{ document.documentElement.dataset.pageHeight = Math.ceil(document.body.scrollHeight); }}
+addEventListener("load", () => requestAnimationFrame(reportHeight));
+setTimeout(reportHeight, 1000);
+</script>
 </head>
 <body>
-<header class="topbar">README Skills <span>/</span> rendered output</header>
-<section class="repohead">
-  <div class="repo">{html.escape(case['repository'])}</div>
-  <div class="notice">Preview generated from {html.escape(case['after_readme'])}; not submitted upstream.</div>
-</section>
-<main class="shell">
-  <div class="filebar">README.md · GitHub-rendered demonstration rewrite</div>
-  <article class="markdown-body">{rendered_markdown}</article>
-</main>
+<main class="markdown-body">{rendered_markdown}</main>
 </body>
 </html>"""
 
@@ -157,24 +211,29 @@ def render_comparison_html(case: dict) -> str:
 <title>{html.escape(case['category'])} README comparison</title>
 <style>
 * {{ box-sizing: border-box; }}
-html, body {{ width: 1440px; height: 5120px; margin: 0; overflow: hidden; }}
+html, body {{ width: {CAPTURE_WIDTH}px; margin: 0; }}
 body {{ background: #07101f; color: #e5edf8; font-family: Inter, "Segoe UI", Arial, sans-serif; }}
-.page {{ width: 1440px; height: 5120px; padding: 28px; background: radial-gradient(circle at 90% 0%, {accent}22, transparent 16%), linear-gradient(145deg, #07101f, #0f172a); }}
+.page {{ width: {CAPTURE_WIDTH}px; padding: 28px; background: radial-gradient(circle at 90% 0%, {accent}22, transparent 16%), linear-gradient(145deg, #07101f, #0f172a); }}
 .top {{ height: 76px; display: flex; align-items: flex-start; justify-content: space-between; }}
 .kicker {{ color: {accent}; font-size: 14px; font-weight: 800; letter-spacing: .14em; }}
 .repo {{ margin-top: 10px; font-size: 27px; font-weight: 750; color: #f8fafc; }}
 .sha {{ color: #94a3b8; font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; padding-top: 8px; }}
-.stack {{ display: grid; grid-template-rows: 2448px 2448px; gap: 20px; }}
+.stack {{ display: grid; gap: 20px; }}
 .panel {{ overflow: hidden; border: 1px solid #26364f; border-radius: 20px; background: #0b1424; box-shadow: 0 16px 42px #02061788; }}
 .panel-head {{ height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; background: #0b1424; border-bottom: 1px solid #26364f; }}
 .label {{ color: #f8fafc; font-size: 13px; font-weight: 800; letter-spacing: .08em; }}
 .label span {{ color: {accent}; }}
 .source {{ color: #94a3b8; font: 12px ui-monospace, SFMono-Regular, Consolas, monospace; }}
-.shot {{ height: 2400px; overflow: hidden; background: #f6f8fa; }}
-.shot img {{ display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }}
+.shot {{ overflow: hidden; background: #fff; }}
+.shot img {{ display: block; width: 100%; height: auto; }}
 .footer {{ height: 54px; display: flex; align-items: flex-end; justify-content: space-between; color: #64748b; font-size: 13px; }}
 .footer strong {{ color: #94a3b8; }}
 </style>
+<script>
+function reportHeight() {{ document.documentElement.dataset.pageHeight = Math.ceil(document.body.scrollHeight); }}
+addEventListener("load", () => requestAnimationFrame(reportHeight));
+setTimeout(reportHeight, 1000);
+</script>
 </head>
 <body>
 <main class="page">
@@ -184,15 +243,15 @@ body {{ background: #07101f; color: #e5edf8; font-family: Inter, "Segoe UI", Ari
   </header>
   <section class="stack">
     <article class="panel">
-      <div class="panel-head"><div class="label"><span>BEFORE</span> · original repository README</div><div class="source">fixed commit screenshot</div></div>
+      <div class="panel-head"><div class="label"><span>BEFORE</span> · original README content</div><div class="source">fixed Markdown snapshot</div></div>
       <div class="shot"><img src="{before_uri}" alt=""></div>
     </article>
     <article class="panel">
-      <div class="panel-head"><div class="label"><span>AFTER</span> · README Skills output</div><div class="source">GitHub-rendered after.md screenshot</div></div>
+      <div class="panel-head"><div class="label"><span>AFTER</span> · preserved and optimized</div><div class="source">GitHub-rendered after.md</div></div>
       <div class="shot"><img src="{after_uri}" alt=""></div>
     </article>
   </section>
-  <footer class="footer"><span>Both panels are screenshots; the after panel comes from {html.escape(case['after_readme'])}.</span><strong>readme-skills</strong></footer>
+  <footer class="footer"><span>README content only · valid source material is preserved and reorganized.</span><strong>readme-skills</strong></footer>
 </main>
 </body>
 </html>"""
@@ -221,8 +280,15 @@ def main() -> int:
     for case in cases:
         before = ROOT / case["before_image"]
         if capture and (args.force or not before.exists()):
+            page = WORK / "pages" / f"{case['id']}-before.html"
+            page.parent.mkdir(parents=True, exist_ok=True)
+            rendered = github_markdown(case, case["before_readme"])
+            page.write_text(
+                render_readme_html(case, resolve_source_targets(rendered, case)),
+                encoding="utf-8",
+            )
             profile = WORK / "profiles" / f"{case['id']}-source-{time.time_ns()}"
-            screenshot(edge, case["source_readme"], before, profile, "1440,2400")
+            screenshot(edge, page.resolve().as_uri(), before, profile)
             print(f"captured {before.relative_to(ROOT)}")
         if render:
             ensure_png(before)
@@ -231,10 +297,11 @@ def main() -> int:
                 page = WORK / "pages" / f"{case['id']}-after.html"
                 page.parent.mkdir(parents=True, exist_ok=True)
                 page.write_text(
-                    render_after_html(case, github_markdown(case)), encoding="utf-8"
+                    render_readme_html(case, github_markdown(case, case["after_readme"])),
+                    encoding="utf-8",
                 )
                 profile = WORK / "profiles" / f"{case['id']}-after-{time.time_ns()}"
-                screenshot(edge, page.resolve().as_uri(), after, profile, "1440,2400")
+                screenshot(edge, page.resolve().as_uri(), after, profile)
                 print(f"rendered {after.relative_to(ROOT)}")
             ensure_png(after)
             page = WORK / "pages" / f"{case['id']}-comparison.html"
@@ -243,7 +310,7 @@ def main() -> int:
             output = ROOT / case["comparison_image"]
             if args.force or not output.exists():
                 profile = WORK / "profiles" / f"{case['id']}-card-{time.time_ns()}"
-                screenshot(edge, page.resolve().as_uri(), output, profile, "1440,5120")
+                screenshot(edge, page.resolve().as_uri(), output, profile, MAX_COMPARISON_HEIGHT)
                 print(f"rendered {output.relative_to(ROOT)}")
     return 0
 

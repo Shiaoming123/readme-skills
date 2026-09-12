@@ -4,15 +4,17 @@
 
 **An evidence-first Codex Skill that matches the repository before it writes the README.**
 
-[简体中文](README.zh-CN.md) · [Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
+[![English README](https://img.shields.io/badge/README-English-0969da.svg)](README.md) [![简体中文 README](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-8250df.svg)](README.zh-CN.md)
 
-[![Version v0.1.1](https://img.shields.io/badge/version-v0.1.1-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
+[Research](research/top-100-readme-study-2026-09-11.md) · [Skill entrypoint](SKILL.md)
+
+[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-0969da.svg)](VERSION) [![MIT License](https://img.shields.io/badge/license-MIT-2da44e.svg)](LICENSE)
 
 </div>
 
 README Skills inspects the actual project, identifies the reader's most useful first action, and then creates or improves the repository front page. It adapts the structure to the artifact and lifecycle instead of filling a universal template.
 
-> **Release:** `v0.1.1`. The Skill is distributed under the MIT License and validated as a complete repository package.
+> **Release:** `v0.2.0`. The Skill is distributed under the MIT License and validated as a complete repository package.
 
 ![README Skills turns repository evidence into a matched README through inspection, classification, writing, and validation.](assets/workflow.svg)
 
@@ -52,7 +54,7 @@ The Skill allows implicit invocation, so repository README work can match it aut
 | --- | --- | --- |
 | `audit-only` | The request is review or analysis only | Report evidence-backed findings without editing |
 | `generate` | No usable root README exists | Inspect the repository, then create the smallest complete README |
-| `optimize` | The README is accurate but weak in clarity or presentation | Preserve its structure and make focused improvements |
+| `optimize` | The README is accurate but weak in clarity, navigation, or presentation | Preserve valid content and destinations, then make focused improvements |
 | `restructure` | The README is stale, contradictory, or organized around implementation | Preserve valid material and rebuild the reader journey |
 | `release-sync` | A release changes version, support, migration, screenshots, or availability | Update only the release-affected claims and links |
 
@@ -94,15 +96,15 @@ All existing localized READMEs are treated as one documentation set. A material 
 
 The default is portable GitHub Flavored Markdown with repository-hosted assets. The Skill can use bounded HTML, theme-aware `<picture>` sources, tables, `<details>`, SVG diagrams, demos, badges, and dynamic trend components when they improve a reader decision.
 
-Dynamic providers remain optional and require a stable text or static fallback. Badges are status metadata, not the introduction. Diagrams include a readable overview and an equivalent text explanation.
+Dynamic providers remain optional and require a stable text or static fallback. Badges provide compact status or high-value navigation, not the introduction. Diagrams include a readable overview and an equivalent text explanation.
 
-A badge pass runs by default for generated, optimized, restructured, and release-synchronized READMEs. It adds only status whose version, workflow, package, license, or documentation target can be verified; missing evidence never becomes a decorative “passing” badge.
+A badge pass runs by default for generated, optimized, restructured, and release-synchronized READMEs. It adds only status whose version, workflow, package, license, or documentation target can be verified; missing evidence never becomes a decorative “passing” badge. Existing localized README files are also candidates for linked language-navigation badges, as demonstrated above.
 
 ## Before-and-after showcase
 
 The showcase uses fixed public README snapshots whose documentation is materially incomplete for its repository type. It evaluates the README snapshot—not the quality of the project—and preserves a source URL, commit SHA, license evidence, and factual audit for every case.
 
-Every comparison contains two actual 1440×2400 screenshots: the original GitHub README at the fixed commit on top, and the complete `after.md` rewrite rendered through GitHub's Markdown API below. The long comparison preserves a large content viewport and multiple section levels; follow the rewrite link to read the full output beyond the captured viewport.
+Every case is an `optimize` example, not a replacement exercise. Its versioned `before.md` preserves the fixed source README, while `after.md` retains valid source content and destinations, reorganizes them, and adds evidence-backed context. Both panels are rendered through GitHub's Markdown API and capture only the README body—never repository navigation, file trees, or sidebars. Width stays consistent at 1440 pixels; height follows the document up to the documented capture limit, avoiding artificial blank space.
 
 <!-- showcase:start -->
 
@@ -111,23 +113,23 @@ Every comparison contains two actual 1440×2400 screenshots: the original GitHub
 <td width="100%" valign="top">
 <h3>Application / frontend</h3>
 <a href="examples/application-frontend/after.md"><img src="assets/showcase/application-frontend-comparison.png" alt="Before and after README comparison for the archived amfoss club website"></a>
-<p><a href="https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md">Fixed source</a> · <a href="examples/application-frontend/after.md">Demonstration rewrite</a></p>
-<p>Corrects repository identity, exposes conflicting runtime evidence, and derives the development path from the manifest.</p>
+<p><a href="https://github.com/amfoss/club-website-2019/blob/674e138a209ac21d815147e77c4401a06c9e9930/README.md">Fixed source</a> · <a href="examples/application-frontend/after.md">Optimized README</a></p>
+<p>Preserves the original setup and Surge notes, while separating stale cross-repository badges and conflicting runtime evidence.</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Library / SDK</h3>
 <a href="examples/library-sdk/after.md"><img src="assets/showcase/library-sdk-comparison.png" alt="Before and after README comparison for the archived pylsh Python library"></a>
-<p><a href="https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md">Fixed source</a> · <a href="examples/library-sdk/after.md">Demonstration rewrite</a></p>
-<p>Adds a source-backed API example while keeping dependency, compatibility, and conflicting version evidence separate.</p>
+<p><a href="https://github.com/mattilyra/LSH/blob/a57069bfb70f4b620d47931f81966b5a73c1b480/README.md">Fixed source</a> · <a href="examples/library-sdk/after.md">Optimized README</a></p>
+<p>Preserves installation, dependency, notebook, and attribution content, then adds a source-backed API example and version-conflict boundary.</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>CLI / automation</h3>
 <a href="examples/cli-scaffold/after.md"><img src="assets/showcase/cli-scaffold-comparison.png" alt="Before and after README comparison for the archived gmusicapi scripts CLI"></a>
-<p><a href="https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md">Fixed source</a> · <a href="examples/cli-scaffold/after.md">Demonstration rewrite</a></p>
+<p><a href="https://github.com/thebigmunch/gmusicapi-scripts/blob/5492593db20efb0ea5ad5dcf1b2e1a0e4d0349e8/README.md">Fixed source</a> · <a href="examples/cli-scaffold/after.md">Optimized README</a></p>
 <p>Routes readers to the successor, recovers five real entry points, and makes credential and network boundaries visible.</p>
 </td>
 </tr>
@@ -135,45 +137,45 @@ Every comparison contains two actual 1440×2400 screenshots: the original GitHub
 <td width="100%" valign="top">
 <h3>Fork / downstream</h3>
 <a href="examples/fork-downstream/after.md"><img src="assets/showcase/fork-downstream-comparison.png" alt="Before and after README comparison for the archived bitcoin libbase58 fork"></a>
-<p><a href="https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md">Fixed source</a> · <a href="examples/fork-downstream/after.md">Demonstration rewrite</a></p>
-<p>Names the upstream relationship, reports the undocumented divergence, and restores build and C API entry points.</p>
+<p><a href="https://github.com/bitcoin/libbase58/blob/b1dd03fa8d1be4be076bb6152325c6b5cf64f678/README.md">Fixed source</a> · <a href="examples/fork-downstream/after.md">Optimized README</a></p>
+<p>Preserves the complete C API guidance, then adds the missing upstream relationship, build path, version, and support boundary.</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Research / reproducibility</h3>
 <a href="examples/research-reproducibility/after.md"><img src="assets/showcase/research-reproducibility-comparison.png" alt="Before and after README comparison for IBM adaptive federated learning research code"></a>
-<p><a href="https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md">Fixed source</a> · <a href="examples/research-reproducibility/after.md">Demonstration rewrite</a></p>
-<p>Separates legacy environment facts, experiment configuration, output artifacts, and the unverified reproduction boundary.</p>
+<p><a href="https://github.com/IBM/adaptive-federated-learning/blob/b6bc482bf2aac15c28b50125ecc6f3e0096c5149/README.md">Fixed source</a> · <a href="examples/research-reproducibility/after.md">Optimized README</a></p>
+<p>Preserves the paper, citation, datasets, experiment flow, outputs, and contributor credit while making the reproduction boundary explicit.</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Dataset / scientific artifact</h3>
 <a href="examples/dataset-artifact/after.md"><img src="assets/showcase/dataset-artifact-comparison.png" alt="Before and after README comparison for the HICO-DET scientific dataset repository"></a>
-<p><a href="https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md">Fixed source</a> · <a href="examples/dataset-artifact/after.md">Demonstration rewrite</a></p>
-<p>Distinguishes code rights from dataset rights, documents the annotation shape, and flags the unchecked download helper.</p>
+<p><a href="https://github.com/fredzzhang/hicodet/blob/e4e234045e0a4128995a2e45e841b3ebe64eda0b/README.md">Fixed source</a> · <a href="examples/dataset-artifact/after.md">Optimized README</a></p>
+<p>Retains all nine utility links, installation steps, three citations, dataset-class route, and license while adding schema and rights context.</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Skills / resource collection</h3>
 <a href="examples/resource-collection/after.md"><img src="assets/showcase/resource-collection-comparison.png" alt="Before and after README comparison for the archived Awesome WebVR resource collection"></a>
-<p><a href="https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md">Fixed source</a> · <a href="examples/resource-collection/after.md">Demonstration rewrite</a></p>
-<p>Turns a historical list into a scoped taxonomy and makes curation, maintenance, and third-party licensing limits explicit.</p>
+<p><a href="https://github.com/cmda-vr/awesome-webvr/blob/125aa5ac8af706fcf886de81e93ca2c3d69bcb28/README.md">Fixed source</a> · <a href="examples/resource-collection/after.md">Optimized README</a></p>
+<p>Keeps all ten resource destinations clickable and reorganizes them into a counted taxonomy with maintenance and licensing guidance.</p>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
 <h3>Design resources</h3>
 <a href="examples/design-resource/after.md"><img src="assets/showcase/design-resource-comparison.png" alt="Before and after README comparison for an archived frontend design resource collection"></a>
-<p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">Fixed source</a> · <a href="examples/design-resource/after.md">Demonstration rewrite</a></p>
-<p>Replaces an over-promising taxonomy with the content actually present and adds link, attribution, and licensing guidance.</p>
+<p><a href="https://github.com/ibrahimraimi-archive/free-frontend-resources/blob/57216cd446a7364db0daf926a1ebd1493bc21f9f/README.md">Fixed source</a> · <a href="examples/design-resource/after.md">Optimized README</a></p>
+<p>Preserves the banner, contribution route, original taxonomy, and all three resources while visualizing which categories are actually populated.</p>
 </td>
 </tr>
 </table>
 
-The full [case index](examples/README.md) records the review method. [Candidate research](research/candidate-cases.md) preserves the primary and backup sets, selection rationale, fixed SHAs, source files, and license evidence. These are documentation demonstrations; no rewrite was submitted upstream.
+The full [case index](examples/README.md) records the review method. [Candidate research](research/candidate-cases.md) preserves the primary and backup sets, selection rationale, fixed SHAs, source files, and license evidence. These are documentation demonstrations; no optimization was submitted upstream.
 
 <!-- showcase:end -->
 

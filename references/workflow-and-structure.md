@@ -30,7 +30,9 @@ Rank findings as blocking, important, or polish. Do not score aesthetics as if t
 
 ### Optimize
 
-Keep the valid information architecture and project voice. Repair the highest-impact gaps with the smallest diff: sharpen the opening, promote the quick start, remove stale clutter, normalize headings, improve examples, and fix presentation defects.
+Keep the valid information, project voice, and working destinations. Start with a preservation inventory of headings, links, resource entries, examples, commands, assets, badges, citations, and attribution. Repair the highest-impact gaps with the smallest coherent diff: sharpen the opening, promote the quick start, reorganize dense material, normalize headings, improve examples, and fix presentation defects.
+
+Optimization is not replacement. Every valid source item must remain present or directly reachable in the optimized README. Do not collapse a resource list, API guide, citation block, tutorial, or setup flow into a count, abstract, or source link. Remove or replace an item only when evidence shows it is stale, broken, unsafe, duplicated, misleading, or out of scope, and record that decision.
 
 ### Restructure
 
@@ -91,4 +93,5 @@ Avoid generic openings such as "a powerful solution". Name the artifact, the con
 - Keep examples realistic but free of secrets, personal paths, and production credentials.
 - Explain what success looks like after a command when it is not obvious.
 - Use tables for exact mappings and comparisons, diagrams for relationships, and prose for simple sequences.
+- For lists and collections, improve retrieval with a taxonomy, compact index, grouped tables, annotations, and status labels while preserving the underlying entries and destinations.
 - Keep the root README navigational. Move exhaustive API, operations, governance, and tutorials to canonical docs when they already exist.

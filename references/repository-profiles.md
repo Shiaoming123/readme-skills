@@ -49,6 +49,8 @@ Use model-card or dataset-card concerns: intended use, source/provenance, format
 
 Lead with scope and curation promise. Provide a navigable taxonomy, item annotation convention, inclusion/exclusion criteria, contribution process, maintenance status, and last-reviewed signals when available. For Skills collections, explain installation or discovery conventions and trust boundaries. For design resources, include format, license, preview, attribution, and editability metadata when relevant.
 
+Preserve every valid resource entry and direct destination during optimization. Reorganize entries into useful categories or tables and add metadata around them; never replace the list with category counts, a prose summary, or a link to the old README. If an entry is dead, unsafe, duplicated, or outside the declared scope, label, move, or remove it with an explicit reason.
+
 Do not call a list "curated" unless selection rules are visible. Avoid unsupported claims of completeness.
 
 ## Documentation, standard, specification, or educational repository
