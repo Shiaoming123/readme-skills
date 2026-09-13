@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -20,6 +21,7 @@ SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 NAMED_LINK_RE = re.compile(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)")
 HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
+EVALUATION_MODES = {"audit-only", "generate", "restructure", "release-sync"}
 
 
 def fail(message: str) -> None:
@@ -30,6 +32,20 @@ def require_file(relative: str) -> Path:
     path = ROOT / relative
     if not path.is_file():
         fail(f"missing file: {relative}")
+    return path
+
+
+def require_directory(relative: str) -> Path:
+    path = ROOT / relative
+    if not path.is_dir():
+        fail(f"missing directory: {relative}")
+    return path
+
+
+def safe_relative(value: str, context: str) -> Path:
+    path = Path(value)
+    if path.is_absolute() or ".." in path.parts:
+        fail(f"unsafe relative path in {context}: {value}")
     return path
 
 
@@ -77,6 +93,144 @@ def check_preserved_navigation(before_text: str, after_text: str, case_id: str) 
             fail(f"source navigation label is no longer a working jump link in {case_id}: {label}")
 
 
+def check_contract_text(text: str, contract: dict, label: str) -> None:
+    for needle in contract.get("contains", []):
+        if needle not in text:
+            fail(f"expected output missing required text for {label}: {needle}")
+    for choices in contract.get("contains_any", []):
+        if not isinstance(choices, list) or not choices or any(
+            not isinstance(choice, str) or not choice for choice in choices
+        ):
+            fail(f"invalid contains_any contract for {label}")
+        if not any(choice in text for choice in choices):
+            fail(f"expected output is missing every allowed alternative for {label}: {choices}")
+    for forbidden in contract.get("excludes", []):
+        if forbidden in text:
+            fail(f"expected output retains forbidden text for {label}: {forbidden}")
+
+
+def check_evaluation_contracts() -> int:
+    data = json.loads(require_file("evals/cases.json").read_text(encoding="utf-8"))
+    if data.get("schema_version") != 1:
+        fail("unsupported evals/cases.json schema")
+    cases = data.get("cases")
+    if not isinstance(cases, list) or not cases:
+        fail("evals/cases.json has no cases")
+
+    seen_ids: set[str] = set()
+    seen_modes: set[str] = set()
+    for case in cases:
+        case_id = case.get("id")
+        mode = case.get("mode")
+        if not isinstance(case_id, str) or not case_id or case_id in seen_ids:
+            fail(f"invalid or duplicate evaluation case id: {case_id!r}")
+        if mode not in EVALUATION_MODES:
+            fail(f"unsupported evaluation mode for {case_id}: {mode!r}")
+        seen_ids.add(case_id)
+        seen_modes.add(mode)
+
+        input_dir = require_directory(str(safe_relative(case.get("input", ""), case_id)))
+        expected_dir = require_directory(str(safe_relative(case.get("expected", ""), case_id)))
+        request_path = require_file(str(safe_relative(case.get("request", ""), case_id)))
+        if not request_path.read_text(encoding="utf-8").strip():
+            fail(f"evaluation request is empty: {case_id}")
+        allowed_changes = case.get("allowed_changes")
+        if not isinstance(allowed_changes, list) or any(
+            not isinstance(path, str) or not path for path in allowed_changes
+        ):
+            fail(f"evaluation case has invalid allowed changes: {case_id}")
+        for source in case.get("required_input_files", []):
+            source_path = input_dir / safe_relative(source, case_id)
+            if not source_path.is_file():
+                fail(f"missing fixture input for {case_id}: {source}")
+        for missing in case.get("missing_input_files", []):
+            if (input_dir / safe_relative(missing, case_id)).exists():
+                fail(f"fixture input unexpectedly contains {missing}: {case_id}")
+
+        outputs = case.get("outputs")
+        if not isinstance(outputs, dict) or not outputs:
+            fail(f"evaluation case has no output contract: {case_id}")
+        output_texts: dict[str, str] = {}
+        for output, contract in outputs.items():
+            if not isinstance(contract, dict):
+                fail(f"evaluation output contract must be an object: {case_id}/{output}")
+            output_path = expected_dir / safe_relative(output, case_id)
+            if not output_path.is_file():
+                fail(f"missing expected output for {case_id}: {output}")
+            text = output_path.read_text(encoding="utf-8")
+            output_texts[output] = text
+            check_contract_text(text, contract, f"{case_id}/{output}")
+
+        localized = case.get("localized_outputs", [])
+        if localized:
+            if len(localized) < 2:
+                fail(f"localized output contract needs at least two files: {case_id}")
+            for output in localized:
+                if output not in output_texts:
+                    fail(f"localized output is not a declared output for {case_id}: {output}")
+            for token in case.get("synchronized_tokens", []):
+                if any(token not in output_texts[output] for output in localized):
+                    fail(f"localized output is out of sync for {case_id}: {token}")
+
+        if mode == "audit-only" and (
+            case.get("source_files_modified") is not False or allowed_changes
+        ):
+            fail(f"audit fixture must explicitly preserve source files: {case_id}")
+
+    if seen_modes != EVALUATION_MODES:
+        missing_modes = ", ".join(sorted(EVALUATION_MODES - seen_modes))
+        fail(f"evaluation modes are incomplete: {missing_modes}")
+    return len(cases)
+
+
+def file_hashes(directory: Path) -> dict[str, str]:
+    return {
+        path.relative_to(directory).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in directory.rglob("*")
+        if path.is_file()
+    }
+
+
+def evaluate_workspace(case_id: str, workspace: Path) -> int:
+    data = json.loads(require_file("evals/cases.json").read_text(encoding="utf-8"))
+    cases = data.get("cases", [])
+    case = next((item for item in cases if item.get("id") == case_id), None)
+    if not case:
+        fail(f"unknown evaluation case: {case_id}")
+    if not workspace.is_dir():
+        fail(f"evaluation workspace is not a directory: {workspace}")
+
+    source_dir = require_directory(str(safe_relative(case["input"], case_id)))
+    source_hashes = file_hashes(source_dir)
+    workspace_hashes = file_hashes(workspace)
+    changed = sorted(
+        path
+        for path in set(source_hashes) | set(workspace_hashes)
+        if source_hashes.get(path) != workspace_hashes.get(path)
+    )
+    allowed_changes = {str(safe_relative(path, case_id)).replace("\\", "/") for path in case["allowed_changes"]}
+    unexpected = [path for path in changed if path not in allowed_changes]
+    if unexpected:
+        fail(f"evaluation workspace changed files outside the contract for {case_id}: {', '.join(unexpected)}")
+
+    if case["mode"] != "audit-only":
+        for output, contract in case["outputs"].items():
+            output_path = workspace / safe_relative(output, case_id)
+            if not output_path.is_file():
+                fail(f"evaluation workspace is missing required output for {case_id}: {output}")
+            check_contract_text(output_path.read_text(encoding="utf-8"), contract, f"{case_id}/{output}")
+        for token in case.get("synchronized_tokens", []):
+            localized = case.get("localized_outputs", [])
+            if any(token not in (workspace / output).read_text(encoding="utf-8") for output in localized):
+                fail(f"evaluation workspace has unsynchronized locale output for {case_id}: {token}")
+
+    print(
+        f"OK: evaluation {case_id}, mode={case['mode']}, "
+        f"allowed changes={len(allowed_changes)}, observed changes={len(changed)}"
+    )
+    return 0
+
+
 def main() -> int:
     required = [
         "SKILL.md",
@@ -98,6 +252,8 @@ def main() -> int:
     ]
     for relative in required:
         require_file(relative)
+
+    evaluation_cases = check_evaluation_contracts()
 
     skill_text = require_file("SKILL.md").read_text(encoding="utf-8")
     if not skill_text.startswith("---\nname: readme-skills\n"):
@@ -190,13 +346,30 @@ def main() -> int:
     markdown = root_readmes + [require_file("examples/README.md")]
     markdown.extend(require_file(case["after_readme"]) for case in cases)
     link_count = sum(check_local_links(path) for path in markdown)
-    print(f"OK: v{version}, MIT, {len(cases)} cases, {len(categories)} categories, {link_count} local links, source/after/comparison images and SVG valid")
+    print(
+        f"OK: v{version}, MIT, {len(cases)} showcase cases, {evaluation_cases} evaluation contracts, "
+        f"{len(categories)} categories, {link_count} local links, source/after/comparison images and SVG valid"
+    )
     return 0
+
+
+def cli() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--evaluate", metavar="CASE", help="check an Agent-produced disposable workspace")
+    parser.add_argument("--workspace", type=Path, help="workspace produced from the selected fixture input")
+    args = parser.parse_args()
+    if args.evaluate:
+        if not args.workspace:
+            parser.error("--workspace is required with --evaluate")
+        return evaluate_workspace(args.evaluate, args.workspace)
+    if args.workspace:
+        parser.error("--workspace requires --evaluate")
+    return main()
 
 
 if __name__ == "__main__":
     try:
-        raise SystemExit(main())
+        raise SystemExit(cli())
     except (AssertionError, KeyError, json.JSONDecodeError, ET.ParseError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         raise SystemExit(1)

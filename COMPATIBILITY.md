@@ -44,6 +44,16 @@ After installation, start a new agent session or refresh its Skill catalog. Use 
 
 The shared package structure and selected frontmatter fields conform to the open specification and pass the current bundled Codex validator. The install locations above are taken from current official client documentation. Runtime behavior has not been end-to-end tested on every client, editor surface, or future version; a client that does not expose Agent Skills may require its own instruction mechanism.
 
+## Runtime evidence protocol
+
+Packaging validation is not runtime compatibility evidence. To record a client result, copy one disposable repository from [the decision-contract fixtures](evals/README.md), use its `request.md`, preserve the allowed file boundary, then run:
+
+```powershell
+python scripts/check_repo.py --evaluate <case-id> --workspace <disposable-workspace>
+```
+
+Record the client name and version, date, invocation, fixture, changed files, checker result, and any behavior gap. Do not recreate a missing historical test record or promote a local package check to a client end-to-end result.
+
 ## Official sources
 
 - [Agent Skills specification](https://agentskills.io/specification)

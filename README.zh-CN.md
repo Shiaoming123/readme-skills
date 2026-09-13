@@ -218,6 +218,10 @@ python scripts/render_showcase.py --render
 python scripts/check_repo.py
 ```
 
+### 验证决策契约
+
+八组可视化案例有意只覆盖保留优先的 `optimize` 工作。四个紧凑的[决策契约 fixture](evals/README.md)分别覆盖 `audit-only`、`generate`、双语 `restructure` 和 `release-sync`。`check_repo.py` 会验证其仓库证据及输出必须保留或避免的事实；这不等于每个客户端都已完成运行时测试。
+
 ## 调研基础
 
 我们在固定快照中收集并分析了 GitHub Star 排名前列公开仓库的 100 篇 README：
@@ -234,6 +238,7 @@ Top 100 样本中，92 个使用图片、75 个使用原始 HTML、67 个使用�
 readme-skills/
 ├── SKILL.md
 ├── agents/openai.yaml
+├── .github/workflows/verify.yml
 ├── COMPATIBILITY.md
 ├── references/
 │   ├── workflow-and-structure.md
@@ -242,6 +247,7 @@ readme-skills/
 │   ├── presentation-and-governance.md
 │   └── worked-examples.md
 ├── examples/
+├── evals/
 ├── research/
 ├── assets/
 │   └── readme-skills-hero.png

@@ -1,0 +1,1 @@
+Restructure the existing README set around the reader's first successful action. Preserve valid links and synchronize the existing English and Simplified Chinese README files. Do not add a new locale.

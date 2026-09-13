@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "audit-drift",
+      "mode": "audit-only",
+      "input": "evals/audit-drift/input",
+      "expected": "evals/audit-drift/expected",
+      "request": "evals/audit-drift/request.md",
+      "allowed_changes": [],
+      "required_input_files": ["README.md", "package.json", "CHANGELOG.md"],
+      "source_files_modified": false,
+      "outputs": {
+        "report.md": {
+          "contains": ["# Audit — PulseParse", "README evidence", "Repository evidence", "Recommended project-side resolution", "No repository files were changed."],
+          "excludes": ["the project is production-ready"]
+        }
+      }
+    },
+    {
+      "id": "generate-cli",
+      "mode": "generate",
+      "input": "evals/generate-cli/input",
+      "expected": "evals/generate-cli/expected",
+      "request": "evals/generate-cli/request.md",
+      "allowed_changes": ["README.md"],
+      "required_input_files": ["package.json", "bin/clipulse.js", "samples/demo.txt", "LICENSE"],
+      "missing_input_files": ["README.md"],
+      "outputs": {
+        "README.md": {
+          "contains": ["# Clipulse", "Node.js 20", "[MIT License](LICENSE)"],
+          "contains_any": [["npm run start -- --input samples/demo.txt", "node bin/clipulse.js --input samples/demo.txt"]],
+          "excludes": ["production-ready", "Windows, macOS, and Linux"]
+        }
+      }
+    },
+    {
+      "id": "restructure-bilingual",
+      "mode": "restructure",
+      "input": "evals/restructure-bilingual/input",
+      "expected": "evals/restructure-bilingual/expected",
+      "request": "evals/restructure-bilingual/request.md",
+      "allowed_changes": ["README.md", "README.zh-CN.md"],
+      "required_input_files": ["README.md", "README.zh-CN.md", "package.json", "docs/migration.md"],
+      "localized_outputs": ["README.md", "README.zh-CN.md"],
+      "synchronized_tokens": ["2.0.0", "npm run dev", "docs/migration.md"],
+      "outputs": {
+        "README.md": {
+          "contains": ["# Paperplane", "npm run dev", "[Migration notes](docs/migration.md)", "2.0.0"],
+          "excludes": ["npm start", "1.4.0"]
+        },
+        "README.zh-CN.md": {
+          "contains": ["# Paperplane", "npm run dev", "[迁移说明](docs/migration.md)", "2.0.0"],
+          "excludes": ["npm start", "1.4.0"]
+        }
+      }
+    },
+    {
+      "id": "release-sync",
+      "mode": "release-sync",
+      "input": "evals/release-sync/input",
+      "expected": "evals/release-sync/expected",
+      "request": "evals/release-sync/request.md",
+      "allowed_changes": ["README.md", "README.zh-CN.md"],
+      "required_input_files": ["README.md", "README.zh-CN.md", "VERSION", "CHANGELOG.md", "bin/reportly.js"],
+      "localized_outputs": ["README.md", "README.zh-CN.md"],
+      "synchronized_tokens": ["2.1.0", "--format json", "CHANGELOG.md"],
+      "outputs": {
+        "README.md": {
+          "contains": ["# Reportly", "2.1.0", "--format json", "[release notes](CHANGELOG.md)"],
+          "excludes": ["2.0.0", "--format text"]
+        },
+        "README.zh-CN.md": {
+          "contains": ["# Reportly", "2.1.0", "--format json", "[发版说明](CHANGELOG.md)"],
+          "excludes": ["2.0.0", "--format text"]
+        }
+      }
+    }
+  ]
+}

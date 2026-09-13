@@ -218,6 +218,10 @@ python scripts/render_showcase.py --render
 python scripts/check_repo.py
 ```
 
+### Verify decision contracts
+
+The eight visual cases intentionally cover preservation-first `optimize` work. Four compact [decision-contract fixtures](evals/README.md) cover `audit-only`, `generate`, bilingual `restructure`, and `release-sync` instead. `check_repo.py` validates their repository evidence and required/forbidden output facts; they are not a claim that every client has been runtime-tested.
+
 ## Research basis
 
 The design is grounded in two local studies. The first collected and analyzed 100 README documents from GitHub's most-starred public repositories at a fixed snapshot:
@@ -234,6 +238,7 @@ The Top 100 sample found images in 92 repositories, raw HTML in 75, badges in 67
 readme-skills/
 ├── SKILL.md
 ├── agents/openai.yaml
+├── .github/workflows/verify.yml
 ├── COMPATIBILITY.md
 ├── references/
 │   ├── workflow-and-structure.md
@@ -242,6 +247,7 @@ readme-skills/
 │   ├── presentation-and-governance.md
 │   └── worked-examples.md
 ├── examples/
+├── evals/
 ├── research/
 ├── assets/
 │   └── readme-skills-hero.png
